@@ -13,6 +13,8 @@
         "sourceType": "module"
     },
     "rules": {
+        "class-methods-use-this": "off",
+        "no-debugger": "off",
         "indent": [
             "error",
             "tab",

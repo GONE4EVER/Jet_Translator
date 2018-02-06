@@ -1,15 +1,15 @@
-import "./styles/app.css";
 import {JetApp} from "webix-jet";
+import "./styles/app.css";
 
 webix.ready(() => {
-	var app = new JetApp({
-		id:			APPNAME,
-		version:	VERSION,
-		start:		"/top/start"
+	let app = new JetApp({
+		id:	APPNAME,
+		version: VERSION,
+		start: "/top/start"
 	});
 	app.render();
 
-	app.attachEvent("app:error:resolve", function(name, error){
+	app.attachEvent("app:error:resolve", (name, error) => {
 		window.console.error(error);
 	});
 });
