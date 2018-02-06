@@ -19,17 +19,19 @@ function displaySecurityLevel() {
 
 export default class RegistrationForm extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		const form = {
 			id: "regForm",
 			view: "form",
 			width: 800,
 			height: 450,
-			header: "Register",
+			header: _("Register"),
 			rows: [
 				{
 					view: "template",
 					type: "header",
-					template: "Register",
+					template: _("Register"),
 					bottomPadding: 0,
 					borderless: true
 				},
@@ -44,7 +46,7 @@ export default class RegistrationForm extends JetView {
 						title: "Maximum name length: 20 symbols"
 					},
 					view: "text",
-					label: "<div class = 'name'><b>Name</b></div>",
+					label: _("<div class = 'name'><b>Name</b></div>"),
 					labelWidth: 250,
 					bottomPadding: 15,
 					width: 700,
@@ -62,26 +64,26 @@ export default class RegistrationForm extends JetView {
 					},
 					type: "email",
 					view: "text",
-					label: "<div class = 'name'><b>E-Mail Address</b></div>",
+					label: _("<div class = 'name'><b>E-Mail Address</b></div>"),
 					labelWidth: 250,
 					bottomPadding: 15,
 					width: 700,
 					height: 40,
 					required: true,
-					invalidMessage: "Invalid E-Mail"
+					invalidMessage: _("Invalid E-Mail")
 				},
 				{
 					id: "passwordInput",
 					name: "password",
 					type: "password",
 					view: "text",
-					label: "<div class = 'name'><b>Password</b></div>",
+					label: _("<div class = 'name'><b>Password</b></div>"),
 					labelWidth: 250,
 					bottomPadding: 15,
 					width: 700,
 					height: 40,
 					required: true,
-					invalidMessage: "Empty password field is not allowed",
+					invalidMessage: _("Empty password field is not allowed"),
 					on: {
 						onTimedKeyPress: displaySecurityLevel
 					}
@@ -90,12 +92,12 @@ export default class RegistrationForm extends JetView {
 					name: "confPass",
 					type: "password",
 					view: "text",
-					label: "<div class = 'name'><b>Confirm Password</b></div>",
+					label: _("<div class = 'name'><b>Confirm Password</b></div>"),
 					labelWidth: 250,
 					bottomPadding: 15,
 					width: 700,
 					height: 40,
-					invalidMessage: "Password wasn`t confirmed",
+					invalidMessage: _("Password wasn`t confirmed"),
 					required: true
 				},
 				{
@@ -105,7 +107,7 @@ export default class RegistrationForm extends JetView {
 							view: "button",
 							id: "regBtn",
 							width: 100,
-							label: "Register",
+							label: _("Register"),
 							click() {
 								$$("regForm").clearValidation();
 								if ($$("regForm").validate()) {

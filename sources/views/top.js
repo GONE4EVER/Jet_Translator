@@ -2,6 +2,8 @@ import {JetView, plugins} from "webix-jet";
 
 export default class TopView extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		const header = {
 			type: "header", template: this.app.config.name
 		};
@@ -14,10 +16,23 @@ export default class TopView extends JetView {
 			select: true,
 			template: "<span class='webix_icon fa-#icon#'></span> #value# ",
 			data: [
-				{value: "DashBoard", id: "start", icon: "envelope-o", click() {}},
-				{value: "Data",		 id: "data", icon: "briefcase", click() {}},
-				{value: "Exit", id: "exit", icon: "", click() {}}
-			]
+				{value: _("Dictionary"), id: "dictionary", icon: "briefcase"},
+				{value: _("New test"), id: "test", icon: ""},
+				{value: _("History"), id: "history", icon: ""},
+				{value: _("Settings"), id: "settings", icon: "cog"},
+				{value: _("Exit"), id: "exit", icon: "bed"}
+			],
+			on: {
+				onItemClick(id) {
+					if (id !== "exit") {
+						let item = this.getItem(id);
+						this.$scope.show(`./${item.id}`);
+					}
+					else {
+						this.$scope.logOut();
+					}
+				}
+			}
 		};
 
 
@@ -50,6 +65,9 @@ export default class TopView extends JetView {
 		return ui;
 	}
 	init() {
-		this.use(plugins.Menu, "top:menu");
+
+	}
+	logOut() {
+		alert();
 	}
 }
