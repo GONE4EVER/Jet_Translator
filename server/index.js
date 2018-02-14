@@ -1,11 +1,9 @@
-const express = require("express");
-const middlewares = require("./middlewares");
-const MongoClient = require("mongodb").MongoClient;
+const http = require("http");
+const app = require("./app");
 
-const port = 3000;
-const app = express();
-app.use(middlewares);
+const port = process.env.PORT || 3000;
+const server = http.createServer(app);
 
-app.listen(port, () => {
+server.listen(port, () => {
 	console.log(`server is running at localhost:${port}`);
 });
