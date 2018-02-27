@@ -13,8 +13,22 @@ router.delete("/:id", remove);
 
 function getAll(req, res) {
 	Word.find()
+		.select("_id value translation partOfSpeech group")
 		.then((items) => {
-			res.status(200).json(items);
+			const response = {
+				count: items.length,
+				words: items.map(item => ({
+					value: item.value,
+					group: item.group,
+					partOfSpeech: item.partOfSpeech,
+					translation: item.translation,
+					request: {
+						type: "GET",
+						url: ""
+					}
+				}))
+			};
+			res.status(200).json(response);
 		})
 		.catch((err) => {
 			res.status(500).json({
@@ -53,7 +67,8 @@ function add(req, res) {
 		_id: mongoose.Types.ObjectId(),
 		value: req.body.value,
 		translation: req.body.translation,
-		partOfSpeech: req.body.partOfSpeech
+		partOfSpeech: req.body.partOfSpeech,
+		group: req.body.group
 	});
 
 	return word.save()
