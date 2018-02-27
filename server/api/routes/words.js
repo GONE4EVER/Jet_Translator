@@ -1,9 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const Word = require("../models/word");
 
 const router = express.Router();
-const Word = require("../models/words");
-
 
 router.get("/", getAll);
 router.get("/:id", getCertain);
@@ -32,25 +31,24 @@ function getCertain(req, res) {
 function add(req, res) {
 	if (!req.body) return res.sendStatus(400);
 
-	const word = {
+
+	const word = new Word({
 		_id: mongoose.Types.ObjectId(),
 		value: req.body.value || "",
 		translation: req.body.translation || "",
 		partOfSpeech: req.body.partOfSpeech || ""
-	};
-	word.save()
-		.then((result) => {
-			console.log(result);
-		})
+	});
+
+	return word.save()
+		.then(result => res.status(201).json({
+			message: "Added successfully",
+			value: result
+		}))
 		.catch(() => {
 
 		});
 	// get last user id in database
 	// like /****let id = users.length ? Math.max(...users.map(o => o.id)) + 1 : 1****/
-	return res.status(201).json({
-		message: "handling POST request to /words",
-		wordRes: word
-	});
 }
 
 
@@ -59,7 +57,6 @@ function update(req, res) {
 		return res.sendStatus(400);
 	}
 	const id = req.params.id;
-
 
 	return res.status(200).json({
 		message: "handling PUT request to /words:id"
@@ -72,6 +69,5 @@ function remove(req, res) {
 		message: "Deleted"
 	});
 }
-
 
 module.exports = router;
