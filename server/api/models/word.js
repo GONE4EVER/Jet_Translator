@@ -1,10 +1,15 @@
 const mongoose = require("mongoose");
 
+const str = {
+	type: String,
+	default: ""
+};
+
 const wordSchema = mongoose.Schema({
 	_id: mongoose.Schema.Types.ObjectId,
-	value: String,
-	translation: String,
-	partOfSpeech: String
+	value: str,
+	translation: str,
+	partOfSpeech: str
 });
 
 module.exports = mongoose.model("Word", wordSchema);

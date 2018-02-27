@@ -24,12 +24,6 @@ app.use((req, res, next) => {
 app.use("/groups", groupRoutes);
 app.use("/words", wordRoutes);
 
-app.use((req, res, next) => {
-	const error = new Error("not found");
-	error.status = 404;
-	next(error);
-});
-
 app.use((error, req, res) => {
 	res.status(error.status || 500).json({
 		error: {
