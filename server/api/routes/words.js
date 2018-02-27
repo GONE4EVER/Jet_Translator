@@ -10,6 +10,7 @@ router.post("/", add);
 router.put("/:id", update);
 router.delete("/:id", remove);
 
+
 function getAll(req, res) {
 	res.status(200).json({
 		message: "handling GET request to /words"
@@ -18,7 +19,7 @@ function getAll(req, res) {
 
 
 function getCertain(req, res) {
-	if (true) { // check if item with incoming id exists
+	if (false) { // check if item with incoming id exists
 		return res.sendStatus(400);
 	}
 
@@ -30,7 +31,6 @@ function getCertain(req, res) {
 
 function add(req, res) {
 	if (!req.body) return res.sendStatus(400);
-
 
 	const word = new Word({
 		_id: mongoose.Types.ObjectId(),
@@ -44,11 +44,9 @@ function add(req, res) {
 			message: "Added successfully",
 			value: result
 		}))
-		.catch(() => {
+		.catch((reject) => {
 
 		});
-	// get last user id in database
-	// like /****let id = users.length ? Math.max(...users.map(o => o.id)) + 1 : 1****/
 }
 
 
