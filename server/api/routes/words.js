@@ -13,22 +13,26 @@ router.delete("/:id", remove);
 
 function getAll(req, res) {
 	Word.find()
-		.select("_id value translation partOfSpeech group")
+		.select("_id value translation partOfSpeech groupId")
 		.then((items) => {
 			const response = {
-				count: items.length,
-				words: items.map(item => ({
+				content: items.map(item => ({
+					_id: item._id,
 					value: item.value,
-					group: item.group,
+					groupId: item.groupId,
 					partOfSpeech: item.partOfSpeech,
-					translation: item.translation,
-					request: {
-						type: "GET",
-						url: ""
-					}
+					translation: item.translation
 				}))
 			};
-			res.status(200).json(response);
+			res.status(200).json({
+				count: items.length,
+				request: {
+					type: "GET",
+					url: `${req.baseUrl}`
+				},
+				...response
+
+			});
 		})
 		.catch((err) => {
 			res.status(500).json({
@@ -42,9 +46,16 @@ function getCertain(req, res) {
 	const id = req.params.id;
 
 	Word.findById(id)
-		.then((elem) => {
-			if (elem) {
-				res.status(200).json(elem);
+		.select("_id value translation partOfSpeech groupId")
+		.then((item) => {
+			if (item) {
+				res.status(200).json({
+					value: item,
+					request: {
+						type: "GET",
+						url: `${req.baseUrl}/${id}`
+					}
+				});
 			}
 			else {
 				res.status(404).json({
@@ -68,13 +79,23 @@ function add(req, res) {
 		value: req.body.value,
 		translation: req.body.translation,
 		partOfSpeech: req.body.partOfSpeech,
-		group: req.body.group
+		groupId: req.body.groupId
 	});
 
 	return word.save()
 		.then(result => res.status(201).json({
 			message: "Added successfully",
-			value: result
+			value: {
+				_id: result._id,
+				value: result.value,
+				translation: result.translation,
+				partOfSpeech: result.partOfSpeech,
+				groupId: result.groupId,
+				request: {
+					type: "POST",
+					url: `${req.baseUrl}`
+				}
+			}
 		}))
 		.catch((err) => {
 			res.status(500).json({
@@ -92,12 +113,18 @@ function update(req, res) {
 	const updateOps = {};
 
 	for (let ops of req.body) {
-		updateOps[ops.propName] = ops.value;
+		updateOps[ops.property] = ops.value;
 	}
 
 	Word.update({_id: id}, {$set: updateOps})
 		.then((result) => {
-			res.status(200).json(result);
+			res.status(200).json({
+				message: result.nModified === 1 ? "Updated successfully" : "Item is already up-to-date",
+				request: {
+					type: "PATCH",
+					url: `${req.baseUrl}/${id}`
+				}
+			});
 		})
 		.catch((err) => {
 			res.status(500).json({
@@ -112,7 +139,14 @@ function remove(req, res) {
 
 	Word.remove({_id: id})
 		.then((result) => {
-			res.status(200).json(result);
+			res.status(200).json({
+				message: result.n === 1 ? "Deleted successfully" : "Item doesn`t exist",
+				request: {
+					type: "DELETE",
+					url: `${req.baseUrl}/${id}`,
+					data: result
+				}
+			});
 		})
 		.catch((err) => {
 			res.status(500).json(err);
