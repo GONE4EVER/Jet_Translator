@@ -14,9 +14,9 @@ router.delete("/:id", remove);
 function getAll(req, res) {
 	Word.find()
 		.select("_id value translation partOfSpeech groupId")
-		.then((items) => {
+		.then((result) => {
 			const response = {
-				content: items.map(item => ({
+				content: result.map(item => ({
 					_id: item._id,
 					value: item.value,
 					groupId: item.groupId,
@@ -25,13 +25,12 @@ function getAll(req, res) {
 				}))
 			};
 			res.status(200).json({
-				count: items.length,
+				count: result.length,
 				request: {
 					type: "GET",
 					url: `${req.baseUrl}`
 				},
 				...response
-
 			});
 		})
 		.catch((err) => {
@@ -47,10 +46,10 @@ function getCertain(req, res) {
 
 	Word.findById(id)
 		.select("_id value translation partOfSpeech groupId")
-		.then((item) => {
-			if (item) {
+		.then((result) => {
+			if (result) {
 				res.status(200).json({
-					value: item,
+					value: result,
 					request: {
 						type: "GET",
 						url: `${req.baseUrl}/${id}`

@@ -8,11 +8,14 @@ const format = {
 const wordSchema = mongoose.Schema({
 	_id: mongoose.Schema.Types.ObjectId,
 	value: format,
-	translation: format,
+	translation: {
+		type: [String],
+		default: []
+	},
 	partOfSpeech: format,
 	groupId: {
 		type: [String],
-		required: true
+		default: ["default"]
 	}
 });
 
