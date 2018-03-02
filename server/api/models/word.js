@@ -12,11 +12,7 @@ const wordSchema = mongoose.Schema({
 		type: [String],
 		default: []
 	},
-	partOfSpeech: format,
-	groupId: {
-		type: [String],
-		default: ["default"]
-	}
+	partOfSpeech: format
 });
 
 module.exports = mongoose.model("Word", wordSchema);

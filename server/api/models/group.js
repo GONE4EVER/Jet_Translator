@@ -9,10 +9,12 @@ const groupSchema = mongoose.Schema({
 	_id: mongoose.Schema.Types.ObjectId,
 	name: format,
 	created: format,
-	count: {
-		type: Number,
-		default: 0
-	}
+	words: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Word"
+		}
+	]
 });
 
 module.exports = mongoose.model("Group", groupSchema);

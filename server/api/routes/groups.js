@@ -14,32 +14,22 @@ router.delete("/:id", remove);
 
 function getAll(req, res) {
 	Group.find()
-		.select("_id name")
-		.then()
-		.catch();
-	return res.status(200).json({
-		message: "handling GET request to the route /groups"
-	});
-}
-
-
-function getCertain(req, res) {
-	const id = req.params.id;
-	const group = Group.findById(id).then(item => item);
-
-	Word.find({groupId: id})
-		.select("_id value translation partOfSpeech groupId")
+		.select("_id name created words")
+		.populate([{model: "Word"}], "_id value translation partOfSpeech")
 		.then((result) => {
 			const response = {
-				count: result.length,
-				name: group.name,
-				content: result
+				content: result.map(item => ({
+					id: item._id,
+					name: item.name,
+					created: item.created,
+					words: item.words
+				}))
 			};
-
 			res.status(200).json({
+				count: result.length,
 				request: {
 					type: "GET",
-					url: `${req.baseUrl}/${id}`
+					url: `${req.baseUrl}`
 				},
 				...response
 			});
@@ -49,10 +39,35 @@ function getCertain(req, res) {
 				error: err
 			});
 		});
+}
 
-	return res.status(200).json({
-		message: "handling GET request to the route /groups:id"
-	});
+
+function getCertain(req, res) {
+	const id = req.params.id;
+	Group.findById(id)
+		.select("_id name created words")
+		.populate("Word", "_id value translation partOfSpeech")
+		.then((result) => {
+			if (result) {
+				res.status(200).json({
+					value: result,
+					request: {
+						type: "GET",
+						url: `${req.baseUrl}/${id}`
+					}
+				});
+			}
+			else {
+				res.status(404).json({
+					message: "No valid entries found for provided ID"
+				});
+			}
+		})
+		.catch((err) => {
+			res.status(500).json({
+				error: err
+			});
+		});
 }
 
 
@@ -89,29 +104,29 @@ function update(req, res) {
 
 	const id = req.params.id;
 	Group.update({_id: id}, {$set: {name: req.body.name}})
-		.then()
-		.catch();
-}
-
-
-function onGroupRemove(id) {
-	Word.find({groupId: id})
 		.then((result) => {
-			// const updated = result.map((item) => {
-			//     let index = item.groupId.findIndex()
-			//     item.groupId[]
-			// })
+			res.status(200).json({
+				message: result.nModified === 1 ? "Updated successfully" : "Item is already up-to-date",
+				request: {
+					type: "PATCH",
+					url: `${req.baseUrl}/${id}`
+				}
+			});
 		})
-		.catch();
+		.catch((err) => {
+			res.status(500).json({
+				error: err
+			});
+		});
 }
+
 
 function remove(req, res) {
 	const id = req.params.id;
 
 	Group.remove({_id: id})
 		.then((result) => {
-			onGroupRemove(id);
-			res.status({
+			res.status(200).json({
 				message: result.n === 1 ? "Deleted successfully" : "Item doesn`t exist",
 				request: {
 					type: "DELETE",

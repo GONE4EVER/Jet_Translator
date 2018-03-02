@@ -13,13 +13,12 @@ router.delete("/:id", remove);
 
 function getAll(req, res) {
 	Word.find()
-		.select("_id value translation partOfSpeech groupId")
+		.select("_id value translation partOfSpeech")
 		.then((result) => {
 			const response = {
 				content: result.map(item => ({
 					_id: item._id,
 					value: item.value,
-					groupId: item.groupId,
 					partOfSpeech: item.partOfSpeech,
 					translation: item.translation
 				}))
@@ -45,7 +44,7 @@ function getCertain(req, res) {
 	const id = req.params.id;
 
 	Word.findById(id)
-		.select("_id value translation partOfSpeech groupId")
+		.select("_id value translation partOfSpeech")
 		.then((result) => {
 			if (result) {
 				res.status(200).json({
@@ -77,8 +76,7 @@ function add(req, res) {
 		_id: mongoose.Types.ObjectId(),
 		value: req.body.value,
 		translation: req.body.translation,
-		partOfSpeech: req.body.partOfSpeech,
-		groupId: req.body.groupId
+		partOfSpeech: req.body.partOfSpeech
 	});
 
 	return word.save()
@@ -89,7 +87,6 @@ function add(req, res) {
 				value: result.value,
 				translation: result.translation,
 				partOfSpeech: result.partOfSpeech,
-				groupId: result.groupId,
 				request: {
 					type: "POST",
 					url: `${req.baseUrl}`
