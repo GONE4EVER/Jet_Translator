@@ -15,7 +15,7 @@ router.delete("/:id", remove);
 function getAll(req, res) {
 	Group.find()
 		.select("_id name created words")
-		.populate([{model: "Word"}], "_id value translation partOfSpeech")
+		.populate("Word", "_id value translation partOfSpeech")
 		.then((result) => {
 			const response = {
 				content: result.map(item => ({
@@ -98,26 +98,64 @@ function add(req, res) {
 }
 
 
-function update(req, res) {
-	if (!req.body) return res.sendStatus(400);
-	if (!req.body.length) return res.sendStatus(400);
+function changeGroupName(id, newName) {
+	return 	Group.update(
+		{_id: id},
+		{$set: {name: newName}}
+	)
+		.then(() => Promise.resolve())
+		.catch(() => Promise.reject());
+}
 
-	const id = req.params.id;
-	Group.update({_id: id}, {$set: {name: req.body.name}})
-		.then((result) => {
-			res.status(200).json({
-				message: result.nModified === 1 ? "Updated successfully" : "Item is already up-to-date",
-				request: {
-					type: "PATCH",
-					url: `${req.baseUrl}/${id}`
-				}
+function updateItems(id, word) {
+	return 	Group.update(
+		{_id: id},
+		{$push: {words: word}}
+	)
+		.then(() => Promise.resolve())
+		.catch(() => Promise.reject());
+}
+
+function update(request, response) {
+	if (!request.body) return response.sendStatus(400);
+	if (!request.body.name && !request.body.word) return response.sendStatus(400);
+
+	const id = request.params.id;
+
+	if (request.body.name) {
+		changeGroupName(id, request.body.name)
+			.then((result) => {
+				response.status(200).json({
+					message: result.nModified === 1 ? "Updated successfully" : "Item is already up-to-date",
+					request: {
+						type: "PATCH",
+						url: `${request.baseUrl}/${id}`
+					}
+				});
+			})
+			.catch((err) => {
+				response.status(500).json({
+					error: err
+				});
 			});
-		})
-		.catch((err) => {
-			res.status(500).json({
-				error: err
+	}
+	else {
+		updateItems(id, request.body.word)
+			.then((result) => {
+				response.status(200).json({
+					message: result.nModified === 1 ? "Updated successfully" : "Item is already up-to-date",
+					request: {
+						type: "PATCH",
+						url: `${request.baseUrl}/${id}`
+					}
+				});
+			})
+			.catch((err) => {
+				response.status(500).json({
+					error: err
+				});
 			});
-		});
+	}
 }
 
 

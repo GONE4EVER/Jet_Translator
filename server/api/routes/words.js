@@ -101,32 +101,63 @@ function add(req, res) {
 }
 
 
-function update(req, res) {
-	if (!req.body) return res.sendStatus(400);
-	if (!req.body.length) return res.sendStatus(400);
+function addTranslation(id, translation) {
+	return Word.update({_id: id}, {$push: {translation}})
+		.then(result => Promise.resolve(result))
+		.catch(err => Promise.reject(err));
+}
 
-	const id = req.params.id;
+function updateData(id, updateOps) {
+	return Word.update({_id: id}, {$set: updateOps})
+		.then(result => Promise.resolve(result))
+		.catch(err => Promise.reject(err));
+}
+
+function update(request, response) {
+	if (!request.body) return response.sendStatus(400);
+	if (!request.body.length) return response.sendStatus(400);
+
+	const id = request.params.id;
 	const updateOps = {};
 
-	for (let ops of req.body) {
+	for (let ops of request.body) {
 		updateOps[ops.property] = ops.value;
 	}
 
-	Word.update({_id: id}, {$set: updateOps})
-		.then((result) => {
-			res.status(200).json({
-				message: result.nModified === 1 ? "Updated successfully" : "Item is already up-to-date",
-				request: {
-					type: "PATCH",
-					url: `${req.baseUrl}/${id}`
-				}
+	if (updateOps.translation) {
+		addTranslation(id, updateOps.translation)
+			.then((result) => {
+				response.status(200).json({
+					message: result.nModified === 1 ? "Updated successfully" : "Item is already up-to-date",
+					request: {
+						type: "PATCH",
+						url: `${request.baseUrl}/${id}`
+					}
+				});
+			})
+			.catch((err) => {
+				response.status(500).json({
+					error: err
+				});
 			});
-		})
-		.catch((err) => {
-			res.status(500).json({
-				error: err
+	}
+	else {
+		updateData(id, updateOps)
+			.then((result) => {
+				response.status(200).json({
+					message: result.nModified === 1 ? "Updated successfully" : "Item is already up-to-date",
+					request: {
+						type: "PATCH",
+						url: `${request.baseUrl}/${id}`
+					}
+				});
+			})
+			.catch((err) => {
+				response.status(500).json({
+					error: err
+				});
 			});
-		});
+	}
 }
 
 
