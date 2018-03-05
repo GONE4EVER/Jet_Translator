@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const Word = require("../models/word");
 const Group = require("../models/group");
+const updater = require("./exportFuncs/groupsUpdate");
 
 const router = express.Router();
 
@@ -98,63 +98,20 @@ function add(req, res) {
 }
 
 
-function changeGroupName(id, newName) {
-	return 	Group.update(
-		{_id: id},
-		{$set: {name: newName}}
-	)
-		.then(() => Promise.resolve())
-		.catch(() => Promise.reject());
-}
+function update(req, res) {
+	if (!req.body) return res.sendStatus(400);
+	if (!req.body.name && !req.body.word) return res.sendStatus(400);
 
-function updateItems(id, word) {
-	return 	Group.update(
-		{_id: id},
-		{$push: {words: word}}
-	)
-		.then(() => Promise.resolve())
-		.catch(() => Promise.reject());
-}
+	const id = req.params.id;
 
-function update(request, response) {
-	if (!request.body) return response.sendStatus(400);
-	if (!request.body.name && !request.body.word) return response.sendStatus(400);
-
-	const id = request.params.id;
-
-	if (request.body.name) {
-		changeGroupName(id, request.body.name)
-			.then((result) => {
-				response.status(200).json({
-					message: result.nModified === 1 ? "Updated successfully" : "Item is already up-to-date",
-					request: {
-						type: "PATCH",
-						url: `${request.baseUrl}/${id}`
-					}
-				});
-			})
-			.catch((err) => {
-				response.status(500).json({
-					error: err
-				});
-			});
+	if (req.body.name) {
+		updater.changeGroupName(id, req, res);
+	}
+	else if (!req.body.deleteFlag) {
+		updater.addItem(id, req, res);
 	}
 	else {
-		updateItems(id, request.body.word)
-			.then((result) => {
-				response.status(200).json({
-					message: result.nModified === 1 ? "Updated successfully" : "Item is already up-to-date",
-					request: {
-						type: "PATCH",
-						url: `${request.baseUrl}/${id}`
-					}
-				});
-			})
-			.catch((err) => {
-				response.status(500).json({
-					error: err
-				});
-			});
+		updater.removeItem(id, req, res);
 	}
 }
 
