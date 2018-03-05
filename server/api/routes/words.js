@@ -1,6 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const Word = require("../models/word");
+const updater = require("./exportFuncs/wordsUpdate");
+const _ = require("lodash");
 
 const router = express.Router();
 
@@ -25,7 +27,7 @@ function getAll(req, res) {
 			};
 			res.status(200).json({
 				count: result.length,
-				request: {
+				req: {
 					type: "GET",
 					url: `${req.baseUrl}`
 				},
@@ -101,62 +103,30 @@ function add(req, res) {
 }
 
 
-function addTranslation(id, translation) {
-	return Word.update({_id: id}, {$push: {translation}})
-		.then(result => Promise.resolve(result))
-		.catch(err => Promise.reject(err));
-}
+function update(req, res) {
+	if (!req.body) return res.sendStatus(400);
+	if (!req.body.length) return res.sendStatus(400);
 
-function updateData(id, updateOps) {
-	return Word.update({_id: id}, {$set: updateOps})
-		.then(result => Promise.resolve(result))
-		.catch(err => Promise.reject(err));
-}
-
-function update(request, response) {
-	if (!request.body) return response.sendStatus(400);
-	if (!request.body.length) return response.sendStatus(400);
-
-	const id = request.params.id;
+	const id = req.params.id;
 	const updateOps = {};
 
-	for (let ops of request.body) {
-		updateOps[ops.property] = ops.value;
+	for (let ops of req.body) {
+		if (ops.value) {
+			updateOps[ops.property] = ops.value;
+		}
 	}
 
-	if (updateOps.translation) {
-		addTranslation(id, updateOps.translation)
-			.then((result) => {
-				response.status(200).json({
-					message: result.nModified === 1 ? "Updated successfully" : "Item is already up-to-date",
-					request: {
-						type: "PATCH",
-						url: `${request.baseUrl}/${id}`
-					}
-				});
-			})
-			.catch((err) => {
-				response.status(500).json({
-					error: err
-				});
-			});
+	if (updateOps.translation && !updateOps.deleteFlag) {
+		updater.addTranslation(id, updateOps.translation, req, res);
+	}
+	else if (!_.isEmpty(updateOps) && !updateOps.deleteFlag) {
+		updater.updateData(id, updateOps, req, res);
+	}
+	else if (!_.isEmpty(updateOps) && updateOps.deleteFlag) {
+		updater.removeTranslation(id, updateOps.translation, req, res);
 	}
 	else {
-		updateData(id, updateOps)
-			.then((result) => {
-				response.status(200).json({
-					message: result.nModified === 1 ? "Updated successfully" : "Item is already up-to-date",
-					request: {
-						type: "PATCH",
-						url: `${request.baseUrl}/${id}`
-					}
-				});
-			})
-			.catch((err) => {
-				response.status(500).json({
-					error: err
-				});
-			});
+		res.sendStatus(400);
 	}
 }
 

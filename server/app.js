@@ -3,7 +3,6 @@ const express = require("express");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 
-
 const app = express();
 const groupRoutes = require("./api/routes/groups");
 const wordRoutes = require("./api/routes/words");
