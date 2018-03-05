@@ -8,9 +8,9 @@ export default class TopView extends JetView {
 			view: "toolbar",
 			height: 50,
 			elements: [
-				{template: "<div style = 'text-align: center; font-size: 24px'><a route = '/top/dictionary'>My Own Dictionary</a></div>", type: "header", borderless: "true"},
-				{view: "button", type: "icon", css: "whiteButton", id: "logIn", label: _("<span>Log In</span>"), width: 100, click() { this.$scope.logIn(); }},
-				{view: "button", type: "icon", css: "whiteButton", id: "register", label: _("<span>Register</span>"), width: 100, click() { this.$scope.registration(); }}
+				{template: "<div style = 'cursor: pointer; text-align: center; font-size: 24px; padding-left: 10%'><a route = '/top/dictionary'>My Own Dictionary</a></div>", type: "header", borderless: "true"},
+				{view: "button", type: "icon", css: "whiteButton", id: "logIn", icon: "sign-in", label: _("<span>Log In</span>"), width: 100, click() { this.$scope.logIn(); }},
+				{view: "button", type: "icon", css: "whiteButton", id: "register", icon: "user-circle", label: _("<span>Register</span>"), width: 100, click() { this.$scope.registration(); }}
 			]
 		};
 
