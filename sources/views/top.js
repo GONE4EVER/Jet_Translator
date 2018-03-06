@@ -79,6 +79,10 @@ export default class TopView extends JetView {
 	}
 	init() {
 		this.on(this.app, "onGroupContentRequest", (handler, groupId) => {
+			let groupName = handler.getItem(groupId).name;
+			$$("groupContentHeaderTemplate").setHTML(`<div style = 'text-align: center'>${groupName}-group content</div>`);
+			$$("groupContentHeaderTemplate").refresh();
+
 			getGroupContent(groupId)
 				.then(res => res.json().content.words.map(
 					word => word))
@@ -87,6 +91,13 @@ export default class TopView extends JetView {
 					$$("groupContent").parse(arr);
 				})
 				.catch(err => console.log(err));
+		});
+
+		this.on(this.app, "onSelect", (sourceHandler, targetHandler, groupId, ignoredHandler) => {
+			if (ignoredHandler) {
+				ignoredHandler.clear();
+			}
+			targetHandler.setValues(sourceHandler.getItem(groupId));
 		});
 	}
 	logOut() {

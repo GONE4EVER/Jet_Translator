@@ -104,6 +104,8 @@ function add(req, res) {
 
 
 function update(req, res) {
+	console.log(JSON.parse(req.body));
+
 	if (!req.body) return res.sendStatus(400);
 	if (!req.body.length) return res.sendStatus(400);
 
@@ -115,7 +117,6 @@ function update(req, res) {
 			updateOps[ops.property] = ops.value;
 		}
 	}
-
 	if (updateOps.translation && !updateOps.deleteFlag) {
 		updater.addTranslation(id, updateOps.translation, req, res);
 	}
