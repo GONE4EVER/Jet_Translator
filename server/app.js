@@ -20,8 +20,8 @@ app.use((req, res, next) => {
 	next();
 });
 
-app.use("/groups", groupRoutes);
-app.use("/words", wordRoutes);
+app.use("/api/groups", groupRoutes);
+app.use("/api/words", wordRoutes);
 
 app.use((req, res) => res.status(500));
 
