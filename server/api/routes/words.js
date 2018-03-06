@@ -103,9 +103,9 @@ function add(req, res) {
 }
 
 
-function update(req, res) {
-	console.log(JSON.parse(req.body));
-
+function update(req, res, next) {
+	console.log(req.body);
+	console.log(!req.body.length);
 	if (!req.body) return res.sendStatus(400);
 	if (!req.body.length) return res.sendStatus(400);
 
@@ -128,6 +128,7 @@ function update(req, res) {
 	}
 	else {
 		res.sendStatus(400);
+		next();
 	}
 }
 
