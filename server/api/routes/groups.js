@@ -15,7 +15,7 @@ router.delete("/:id", remove);
 function getAll(req, res) {
 	Group.find()
 		.select("_id name created words")
-		.populate("Word", "_id value translation partOfSpeech")
+		.populate([{path: "words", model: "Word", select: "_id value translation partOfSpeech"}])
 		.then((result) => {
 			const response = {
 				content: result.map(item => ({
@@ -46,11 +46,11 @@ function getCertain(req, res) {
 	const id = req.params.id;
 	Group.findById(id)
 		.select("_id name created words")
-		.populate("Word", "_id value translation partOfSpeech")
+		.populate([{path: "words", model: "Word", select: "_id value translation partOfSpeech"}])
 		.then((result) => {
 			if (result) {
 				res.status(200).json({
-					value: result,
+					content: result,
 					request: {
 						type: "GET",
 						url: `${req.baseUrl}/${id}`

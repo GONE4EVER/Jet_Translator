@@ -50,7 +50,7 @@ function getCertain(req, res) {
 		.then((result) => {
 			if (result) {
 				res.status(200).json({
-					value: result,
+					content: result,
 					request: {
 						type: "GET",
 						url: `${req.baseUrl}/${id}`

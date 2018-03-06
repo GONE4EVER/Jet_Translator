@@ -1,4 +1,5 @@
 import {JetView} from "webix-jet";
+import {getGroupContent} from "../models/groups";
 
 export default class TopView extends JetView {
 	config() {
@@ -77,7 +78,16 @@ export default class TopView extends JetView {
 		return ui;
 	}
 	init() {
-
+		this.on(this.app, "onGroupContentRequest", (handler, groupId) => {
+			getGroupContent(groupId)
+				.then(res => res.json().content.words.map(
+					word => word))
+				.then((arr) => {
+					$$("groupContent").clearAll();
+					$$("groupContent").parse(arr);
+				})
+				.catch(err => console.log(err));
+		});
 	}
 	logOut() {
 		this.show("/unlogged/unlogged.logIn");
