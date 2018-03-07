@@ -115,18 +115,21 @@ function update(req, res, next) {
 			updateOps[ops.property] = ops.value;
 		}
 	}
-	if (updateOps.translation && !updateOps.deleteFlag) {
-		updater.addTranslation(id, updateOps.translation, req, res);
-	}
-	else if (!_.isEmpty(updateOps) && !updateOps.deleteFlag) {
-		updater.updateData(id, updateOps, req, res);
-	}
-	else if (!_.isEmpty(updateOps) && updateOps.deleteFlag) {
-		updater.removeTranslation(id, updateOps.translation, req, res);
-	}
-	else {
-		res.sendStatus(400);
-		next();
+	switch (!_.isEmpty(updateOps)) {
+		case true:
+			if (updateOps.translation && !updateOps.deleteFlag) {
+				updater.addTranslation(id, updateOps.translation, req, res);
+			}
+			if (!updateOps.deleteFlag && !updateOps.translation) {
+				updater.updateData(id, updateOps, req, res);
+			}
+			else if (updateOps.deleteFlag) {
+				updater.removeTranslation(id, updateOps.translation, req, res);
+			}
+			break;
+		default:
+			res.sendStatus(400);
+			break;
 	}
 }
 
