@@ -7,6 +7,7 @@ export function getWord(id) {
 }
 
 export function updateWord(id, updateOptions) {
-	console.log(JSON.stringify(updateOptions));
-	return webix.ajax().headers({"Content-Type": "application/json"}).patch(`http://localhost:3000/api/words/${id}`, JSON.stringify(updateOptions));
+	return webix.ajax()
+		.headers({"Content-Type": "application/json"})
+		.patch(`http://localhost:3000/api/words/${id}`, JSON.stringify(updateOptions));
 }

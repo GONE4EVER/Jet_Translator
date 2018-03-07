@@ -103,6 +103,5 @@ export default class LogInForm extends JetView {
 	}
 
 	clearValidation() {
-    	console.log(this);
 	}
 }

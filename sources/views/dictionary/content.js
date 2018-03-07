@@ -9,13 +9,12 @@ const all = {
 	on: {
 		onAfterSelect(id) {
 			$$("groupContent").unselectAll();
-			$$("groupList").unselectAll();
 			this.$scope.app.callEvent("onSelect", [this, $$("wordPanel"), id, $$("groupPanel")]);
 		}
 	}
 };
 
-const groups = {
+const groupsList = {
 	id: "groupList",
 	view: "list",
 	maxWidth: 450,
@@ -23,7 +22,7 @@ const groups = {
 	template: "#name# (#created#)",
 	on: {
 		onAfterSelect(id) {
-			this.$scope.app.callEvent("onGroupContentRequest", [this, id]);
+			this.$scope.app.callEvent("onGroupContentRequest", [this, $$("groupContent"), id]);
 			this.$scope.app.callEvent("onSelect", [this, $$("groupPanel"), id, $$("wordPanel")]);
 		}
 	}
@@ -66,7 +65,7 @@ const layout = {
 						{template: "<div style = 'text-align: center'>All groups</div>", type: "header", borderless: "true"}
 					]
 				},
-				groups
+				groupsList
 			]
 		},
 		{

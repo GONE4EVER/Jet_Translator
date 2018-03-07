@@ -1,5 +1,5 @@
 import {JetView} from "webix-jet";
-import {getGroupContent} from "../models/groups";
+import {groups} from "../models/groups";
 
 export default class TopView extends JetView {
 	config() {
@@ -78,24 +78,26 @@ export default class TopView extends JetView {
 		return ui;
 	}
 	init() {
-		this.on(this.app, "onGroupContentRequest", (handler, groupId) => {
-			let groupName = handler.getItem(groupId).name;
+		this.on(this.app, "onGroupContentRequest", (sourceHandler, targetHandler, groupId) => {
+			let groupName = sourceHandler.getItem(groupId).name;
 			$$("groupContentHeaderTemplate").setHTML(`<div style = 'text-align: center'>${groupName}-group content</div>`);
 			$$("groupContentHeaderTemplate").refresh();
 
-			getGroupContent(groupId)
-				.then(res => res.json().content.words.map(
-					word => word))
-				.then((arr) => {
-					$$("groupContent").clearAll();
-					$$("groupContent").parse(arr);
-				})
-				.catch(err => console.log(err));
+			targetHandler.clearAll();
+			for (let group of groups.getItem(groups.getFirstId())) {
+				if (group.groupID === groupId) {
+					targetHandler.parse(group.words);
+					break;
+				}
+			}
 		});
 
 		this.on(this.app, "onSelect", (sourceHandler, targetHandler, groupId, ignoredHandler) => {
 			if (ignoredHandler) {
 				ignoredHandler.clear();
+			}
+			else if (!$$("groupPanel").getValues().name) {
+				$$("groupPanel").setValues($$("groupList").getSelectedItem());
 			}
 			targetHandler.setValues(sourceHandler.getItem(groupId));
 		});
