@@ -12,8 +12,7 @@ export default class DictionatyTopView extends JetView {
 			$$("allList").parse(res.json().content);
 		});
 		getAllGroups().then((res) => {
-			const data = res.json().content;
-			$$("groupList").parse(data);
+			$$("groupList").parse(res.json().content);
 		});
 	}
 }

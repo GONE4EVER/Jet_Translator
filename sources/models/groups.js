@@ -1,6 +1,4 @@
-export const groups = new webix.DataCollection({
-	datatype: "jsarray"
-});
+export const groups = new webix.DataCollection({datatype: "jsarray"});
 
 
 export function getAllGroups() {

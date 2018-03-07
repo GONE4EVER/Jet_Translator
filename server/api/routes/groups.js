@@ -73,11 +73,12 @@ function getCertain(req, res) {
 
 function add(req, res) {
 	if (!req.body) return res.status(400);
+	let date = new Date();
 
 	const group = new Group({
 		_id: mongoose.Types.ObjectId(),
 		name: req.body.name,
-		created: new Date()
+		created: `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`
 	});
 
 	return group.save()
