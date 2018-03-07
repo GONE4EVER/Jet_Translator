@@ -1,11 +1,38 @@
 import sidePanel from "./sidePanel/index";
+import {deleteWord, getAllWords} from "../../models/words";
 
 const all = {
 	id: "allList",
 	view: "list",
 	maxWidth: 450,
 	select: true,
-	template: "#value# (#partOfSpeech#)",
+	template: "#value# (#partOfSpeech#)<span class = 'webix_icon fa-close'></span>",
+	onClick: {
+		"fa-close": (ev, id) => {
+			webix.confirm({
+				text: "Item data will be lost. <br/> Are you sure?",
+				ok: "Yes",
+				cancel: "Cancel",
+				callback: (ok) => {
+					if (ok) {
+						let item = $$("allList").getItem(id);
+						deleteWord(item._id)
+							.then((res) => {
+								webix.message({text: res.json().message});
+								$$("allList").remove(item._id);
+								getAllWords().then((response) => {
+									$$("allList").clearAll();
+									$$("allList").parse(response.json().content);
+								});
+							})
+							.catch((err) => {
+								webix.message({text: err});
+							});
+					}
+				}
+			});
+		}
+	},
 	on: {
 		onAfterSelect(id) {
 			$$("groupContent").unselectAll();

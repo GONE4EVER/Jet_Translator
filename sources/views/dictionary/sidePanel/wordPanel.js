@@ -21,6 +21,7 @@ function removeTranslation() {
 		deleteFlag: "true",
 		translation: `${$$("translation").getValue()}`
 	}];
+	// deleteTranslation()
 	console.log(data);
 }
 
@@ -52,7 +53,8 @@ const wordPanel = {
 					value: "Add New",
 					type: "form",
 					click() {
-
+						webix.ajax().post("http://localhost:3000/api/words/", $$("wordPanel").getValues())
+							.then(() => {});
 					}
 				}
 			]
