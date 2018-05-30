@@ -3,23 +3,21 @@ const Group = require("../../models/group");
 function getAll(req, res) {
 	Group.find()
 		.select("_id name created words")
-		.populate([{path: "words", model: "Word", select: "_id value translation partOfSpeech"}])
+		.populate([{path: "words", model: "Word", select: "_id value"}])
 		.then((result) => {
-			const response = {
-				content: result.map(item => ({
-					id: item._id,
-					name: item.name,
-					created: item.created,
-					words: item.words
-				}))
-			};
+			const response = result.map(item => ({
+				id: item._id,
+				name: item.name,
+				created: item.created,
+				words: item.words
+			}));
+
 			res.status(302).json({
-				count: result.length,
 				request: {
 					type: "GET",
 					url: `${req.baseUrl}`
 				},
-				...response
+				content: response
 			});
 		})
 		.catch((err) => {

@@ -13,12 +13,15 @@ function add(req, res) {
 
 	return group.save()
 		.then(result => res.status(200).json({
-			_id: result._id,
-			name: result.name,
-			created: result.created,
 			request: {
 				type: "POST",
 				url: `${req.baseUrl}`
+			},
+			message: "Added successfully",
+			item: {
+				_id: result._id,
+				name: result.name,
+				created: result.created
 			}
 		}))
 		.catch((err) => {

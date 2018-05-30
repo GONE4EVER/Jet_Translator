@@ -9,12 +9,14 @@ function getCertain(req, res) {
 		.select("_id value translation partOfSpeech")
 		.then((result) => {
 			if (result) {
+				res.type("json");
+
 				res.status(302).json({
-					content: result,
 					request: {
 						type: "GET",
 						url: `${req.baseUrl}/${id}`
-					}
+					},
+					content: result
 				});
 			}
 			else {

@@ -4,15 +4,15 @@ function getCertain(req, res) {
 	const id = req.params.id;
 	Group.findById(id)
 		.select("_id name created words")
-		.populate([{path: "words", model: "Word", select: "_id value translation partOfSpeech"}])
+		.populate([{path: "words", model: "Word", select: "_id value"}])
 		.then((result) => {
 			if (result) {
 				res.status(302).json({
-					content: result,
 					request: {
 						type: "GET",
 						url: `${req.baseUrl}/${id}`
-					}
+					},
+					content: result
 				});
 			}
 			else {

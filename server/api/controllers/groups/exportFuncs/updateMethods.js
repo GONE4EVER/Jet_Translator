@@ -5,7 +5,10 @@ function changeGroupName(id, req) {
 		{_id: id},
 		{$set: {name: req.body.name}}
 	)
-		.then(result => result)
+		.then(result => ({
+			...result,
+			ifModified: result.nModified
+		}))
 		.catch(err => Promise.reject(err));
 }
 
@@ -14,7 +17,10 @@ function addItem(id, req) {
 		{_id: id},
 		{$push: {words: req.body.word}}
 	)
-		.then(result => result)
+		.then(result => ({
+			...result,
+			ifModified: result.nModified
+		}))
 		.catch(err => Promise.reject(err));
 }
 
@@ -23,7 +29,10 @@ function removeItem(id, req) {
 		{_id: id},
 		{$pull: {words: req.body.word}}
 	)
-		.then(result => result)
+		.then(result => ({
+			...result,
+			ifModified: result.nModified
+		}))
 		.catch(err => Promise.reject(err));
 }
 

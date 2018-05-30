@@ -13,16 +13,16 @@ function add(req, res) {
 
 	return word.save()
 		.then(result => res.status(201).json({
+			request: {
+				type: "POST",
+				url: `${req.baseUrl}`
+			},
 			message: "Added successfully",
-			value: {
+			item: {
 				_id: result._id,
 				value: result.value,
 				translation: result.translation,
-				partOfSpeech: result.partOfSpeech,
-				request: {
-					type: "POST",
-					url: `${req.baseUrl}`
-				}
+				partOfSpeech: result.partOfSpeech
 			}
 		}))
 		.catch((err) => {

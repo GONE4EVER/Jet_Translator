@@ -8,25 +8,24 @@ function getAll(req, res) {
 		.then((result) => {
 			console.log(req.get("etag"));
 
-			const response = {
-				content: result.map(item => ({
-					_id: item._id,
-					value: item.value,
-					partOfSpeech: item.partOfSpeech,
-					translation: item.translation
-				}))
-			};
+			const response = result.map(item => ({
+				_id: item._id,
+				value: item.value,
+				partOfSpeech: item.partOfSpeech,
+				translation: item.translation
+			}));
+
 
 			res.header("Content-Length", result.length);
 			res.header("Cache-Control", `no-cache, max-age=${MAX_AGE}`);
 			res.type("json");
 
 			res.status(302).json({
-				req: {
+				request: {
 					type: "GET",
 					url: `${req.baseUrl}`
 				},
-				...response
+				content: response
 			});
 		})
 		.catch((err) => {
