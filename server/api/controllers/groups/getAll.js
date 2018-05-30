@@ -13,7 +13,7 @@ function getAll(req, res) {
 					words: item.words
 				}))
 			};
-			res.status(200).json({
+			res.status(302).json({
 				count: result.length,
 				request: {
 					type: "GET",

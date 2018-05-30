@@ -1,6 +1,5 @@
 const Group = require("../../models/group");
 
-
 function remove(req, res) {
 	const id = req.params.id;
 

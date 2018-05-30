@@ -4,7 +4,6 @@ const mongoose = require("mongoose");
 const morgan = require("morgan");
 const _ = require("lodash");
 
-
 const app = express();
 const groupRoutes = require("./api/routes/groups");
 const wordRoutes = require("./api/routes/words");

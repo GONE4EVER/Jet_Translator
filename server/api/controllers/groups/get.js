@@ -7,7 +7,7 @@ function getCertain(req, res) {
 		.populate([{path: "words", model: "Word", select: "_id value translation partOfSpeech"}])
 		.then((result) => {
 			if (result) {
-				res.status(200).json({
+				res.status(302).json({
 					content: result,
 					request: {
 						type: "GET",
