@@ -2,6 +2,8 @@ const bodyParser = require("body-parser");
 const express = require("express");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
+const _ = require("lodash");
+
 
 const app = express();
 const groupRoutes = require("./api/routes/groups");
@@ -15,7 +17,10 @@ app.use(bodyParser.json());
 
 app.use((req, res, next) => {
 	res.header("Access-Control-Allow-Origin", "*");
-	res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Accept");
+	res.header(
+		"Access-Control-Allow-Headers",
+		"X-Requested-With, Content-Type, Accept, If-Modified-Since, ETag"
+	);
 	res.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PATCH, OPTIONS");
 	next();
 });
