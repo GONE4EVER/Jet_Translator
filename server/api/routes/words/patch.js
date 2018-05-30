@@ -1,17 +1,17 @@
-const updater = require("../exportFuncs/wordsUpdate");
+const updater = require("./exportFuncs/updateMethods");
 const _ = require("lodash");
 
-function getPatchResult(id, updateOps, req, res) {
+function getPatchResult(id, updateOps, res) {
 	switch (!_.isEmpty(updateOps)) {
 		case true:
 			if (updateOps.translation && !updateOps.deleteFlag) {
-				return updater.addTranslation(id, updateOps.translation, req, res);
+				return updater.addTranslation(id, updateOps.translation);
 			}
 			if (!updateOps.deleteFlag && !updateOps.translation) {
-				return updater.updateData(id, updateOps, req, res);
+				return updater.updateData(id, updateOps);
 			}
 			else if (updateOps.deleteFlag) {
-				return updater.removeTranslation(id, updateOps.translation, req, res);
+				return updater.removeTranslation(id, updateOps.translation);
 			}
 			break;
 		default:
@@ -31,17 +31,23 @@ function update(req, res) {
 			updateOps[ops.property] = ops.value;
 		}
 	}
-	const result = getPatchResult(id, updateOps, req, res);
+	const result = getPatchResult(id, updateOps, res);
 
-	result.then((result) => {
-		res.status(200).json({
-			message: result.ifModified === 1 ? "Updated successfully" : "Item is already up-to-date",
-			req: {
-				type: "PATCH",
-				url: `${req.baseUrl}/${id}`
-			}
+	result
+		.then((result) => {
+			res.status(200).json({
+				message: result.ifModified === 1 ? "Updated successfully" : "Item is already up-to-date",
+				req: {
+					type: "PATCH",
+					url: `${req.baseUrl}/${id}`
+				}
+			});
+		})
+		.catch((err) => {
+			res.status(500).json({
+				error: err
+			});
 		});
-	});
 }
 
 module.exports = update;
