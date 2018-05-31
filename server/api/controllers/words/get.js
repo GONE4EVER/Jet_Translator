@@ -7,6 +7,7 @@ function getCertain(req, res) {
 
 	Word.findById(id)
 		.select("_id value translation partOfSpeech")
+		.exec()
 		.then((result) => {
 			if (result) {
 				res.type("json");

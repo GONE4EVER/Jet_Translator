@@ -5,10 +5,8 @@ function addTranslation(id, translation) {
 		{_id: id},
 		{$push: {translation}}
 	)
-		.then(result => ({
-			...result,
-			ifModified: result.nModified
-		}))
+		.exec()
+		.then(result => result)
 		.catch(err => Promise.reject(err));
 }
 
@@ -17,10 +15,8 @@ function updateData(id, updateOps) {
 		{_id: id},
 		{$set: updateOps}
 	)
-		.then(result => ({
-			...result,
-			ifModified: result.nModified
-		}))
+		.exec()
+		.then(result => result)
 		.catch(err => Promise.reject(err));
 }
 
@@ -29,10 +25,8 @@ function removeTranslation(id, translation) {
 		{_id: id},
 		{$pull: {translation}}
 	)
-		.then(result => ({
-			...result,
-			ifModified: result.nModified
-		}))
+		.exec()
+		.then(result => result)
 		.catch(err => Promise.reject(err));
 }
 

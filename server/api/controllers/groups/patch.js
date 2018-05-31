@@ -16,12 +16,14 @@ function update(req, res) {
 
 	const id = req.params.id;
 
-	const result = getPatchResult(id, req);
+	const patchResult = getPatchResult(id, req);
 
-	result
+	patchResult
 		.then((result) => {
+			console.log(result);
+
 			res.status(200).json({
-				message: result.ifModified === 1 ? "Updated successfully" : "Item is already up-to-date",
+				message: result.nModified === 1 ? "Updated successfully" : "Item is already up-to-date",
 				req: {
 					type: "PATCH",
 					url: `${req.baseUrl}/${id}`

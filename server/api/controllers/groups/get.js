@@ -5,6 +5,7 @@ function getCertain(req, res) {
 	Group.findById(id)
 		.select("_id name created words")
 		.populate([{path: "words", model: "Word", select: "_id value"}])
+		.exec()
 		.then((result) => {
 			if (result) {
 				res.status(302).json({

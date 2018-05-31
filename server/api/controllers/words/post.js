@@ -12,6 +12,7 @@ function add(req, res) {
 	});
 
 	return word.save()
+		.exec()
 		.then(result => res.status(201).json({
 			request: {
 				type: "POST",

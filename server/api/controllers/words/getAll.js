@@ -5,6 +5,7 @@ const MAX_AGE = 120;
 function getAll(req, res) {
 	Word.find()
 		.select("_id value translation partOfSpeech")
+		.exec()
 		.then((result) => {
 			console.log(req.get("etag"));
 

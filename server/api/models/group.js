@@ -10,7 +10,8 @@ const groupSchema = mongoose.Schema({
 	words: [
 		{
 			type: mongoose.Schema.Types.ObjectId,
-			ref: "Word"
+			ref: "Word",
+			required: true
 		}
 	]
 });

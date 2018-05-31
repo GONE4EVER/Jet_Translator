@@ -4,6 +4,7 @@ function remove(req, res) {
 	const id = req.params.id;
 
 	Group.remove({_id: id})
+		.exec()
 		.then((result) => {
 			res.status(200).json({
 				message: result.n === 1 ? "Deleted successfully" : "Item doesn`t exist",

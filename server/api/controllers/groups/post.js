@@ -12,6 +12,7 @@ function add(req, res) {
 	});
 
 	return group.save()
+		.exec()
 		.then(result => res.status(200).json({
 			request: {
 				type: "POST",

@@ -4,6 +4,7 @@ function remove(req, res) {
 	const id = req.params.id;
 
 	Word.remove({_id: id})
+		.exec()
 		.then((result) => {
 			if (result.n === 1) {
 				res.status(200).json({
