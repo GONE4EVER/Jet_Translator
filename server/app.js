@@ -14,6 +14,8 @@ app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
+app.set("etag", "strong");
+
 app.use((req, res, next) => {
 	res.header("Access-Control-Allow-Origin", "*");
 	res.header(
@@ -21,6 +23,9 @@ app.use((req, res, next) => {
 		"X-Requested-With, Content-Type, Accept, If-Modified-Since, ETag"
 	);
 	res.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PATCH, OPTIONS");
+
+	res.type("json");
+
 	next();
 });
 

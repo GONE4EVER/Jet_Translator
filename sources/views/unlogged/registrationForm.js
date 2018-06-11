@@ -1,7 +1,15 @@
 import {JetView} from "webix-jet";
 
+const PASSWORD_INPUT_ID = "registration:password:input";
+const PASSWORD_SECURITY_LEVEL_OUTPUT_ID = "registration:password:securityLevel";
+const REGISTRATION_FORM_ID = "registration:form";
+
+const getPasswordInputId = () => PASSWORD_INPUT_ID;
+const getPasswordSecurityLevelId = () => PASSWORD_SECURITY_LEVEL_OUTPUT_ID;
+const getRegistrationFormId = () => REGISTRATION_FORM_ID;
+
 function checkSecurityLevel() {
-	let len = $$("passwordInput").getValue().length;
+	let len = $$(getPasswordInputId()).getValue().length;
 	if (len < 5) {
 		return ["red", "battery-empty"];
 	}
@@ -13,7 +21,7 @@ function checkSecurityLevel() {
 
 function displaySecurityLevel() {
 	let ico = checkSecurityLevel();
-	$$("passSecurityLevel").setHTML(`<span style='font-size:25px;
+	$$(getPasswordSecurityLevelId()).setHTML(`<span style='font-size:25px;
 	color: ${ico[0]}' class='webix_icon fa-${ico[1]}'></span>`);
 }
 
@@ -22,7 +30,7 @@ export default class RegistrationForm extends JetView {
 		const _ = this.app.getService("locale")._;
 
 		const form = {
-			id: "regForm",
+			id: getRegistrationFormId(),
 			view: "form",
 			width: 800,
 			height: 450,
@@ -109,15 +117,17 @@ export default class RegistrationForm extends JetView {
 							width: 100,
 							label: _("Register"),
 							click() {
-								$$("regForm").clearValidation();
-								if ($$("regForm").validate()) {
-									this.$scope.app.callEvent("onRegistration", [$$("regForm").getValues()]);
+								const regForm = $$(getRegistrationFormId());
+
+								regForm.clearValidation();
+								if (regForm.validate()) {
+									this.$scope.app.callEvent("onRegistration", [regForm.getValues()]);
 								}
 							}
 						},
 						{
 							view: "template",
-							id: "passSecurityLevel",
+							id: getPasswordSecurityLevelId(),
 							borderless: true
 						}
 					]
@@ -127,7 +137,7 @@ export default class RegistrationForm extends JetView {
 				name(value) { return value.trim() !== ""; },
 				email(value) { return webix.rules.isEmail(value); },
 				password(value) { return value.trim() !== ""; },
-				confPass(value) { return value === $$("passwordInput").getValue(); }
+				confPass(value) { return value === $$(getPasswordInputId()).getValue(); }
 			}
 		};
 		return form;

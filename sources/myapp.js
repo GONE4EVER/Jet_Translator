@@ -7,7 +7,12 @@ webix.ready(() => {
 	let app = new JetApp({
 		id:	APPNAME,
 		version: VERSION,
-		start: "/unlogged/unlogged.registration"
+		start: "/unlogged/unlogged.registration",
+		routes: {
+			"/newuser": "/unlogged/unlogged.registration",
+			"/login": "/unlogged/unlogged.logIn",
+			"/dictionary": "/top/dictionary"
+		}
 	});
 
 	app.use(plugins.Locale);

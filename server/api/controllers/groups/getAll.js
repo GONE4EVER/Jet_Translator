@@ -13,7 +13,7 @@ function getAll(req, res) {
 				words: item.words
 			}));
 
-			res.status(302).json({
+			res.status(200).json({
 				request: {
 					type: "GET",
 					url: `${req.baseUrl}`

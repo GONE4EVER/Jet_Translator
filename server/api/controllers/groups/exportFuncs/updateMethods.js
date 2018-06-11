@@ -12,20 +12,16 @@ function changeGroupName(id, req) {
 }
 
 function addItem(id, req) {
-	Word.findById(req.body.word)
+	return Word.findById(req.body.word)
 		.exec()
-		.then(() => {})
-		.catch(() => {
-
-		});
-
-	return	Group.update(
-		{_id: id},
-		{$push: {words: req.body.word}}
-	)
-		.exec()
-		.then(result => result)
-		.catch(err => Promise.reject(err));
+		.then(() => Group.update(
+			{_id: id},
+			{$push: {words: req.body.word}}
+		)
+			.exec()
+			.then(result => result)
+			.catch(err => Promise.reject(err)))
+		.catch(error => error);
 }
 
 function removeItem(id, req) {

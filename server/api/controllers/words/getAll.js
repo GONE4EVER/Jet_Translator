@@ -1,14 +1,10 @@
 const Word = require("../../models/word");
 
-const MAX_AGE = 120;
-
 function getAll(req, res) {
 	Word.find()
 		.select("_id value translation partOfSpeech")
 		.exec()
 		.then((result) => {
-			console.log(req.get("etag"));
-
 			const response = result.map(item => ({
 				_id: item._id,
 				value: item.value,
@@ -16,12 +12,7 @@ function getAll(req, res) {
 				translation: item.translation
 			}));
 
-
-			res.header("Content-Length", result.length);
-			res.header("Cache-Control", `no-cache, max-age=${MAX_AGE}`);
-			res.type("json");
-
-			res.status(302).json({
+			res.status(200).json({
 				request: {
 					type: "GET",
 					url: `${req.baseUrl}`

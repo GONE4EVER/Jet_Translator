@@ -12,7 +12,7 @@ function getCertain(req, res) {
 			if (result) {
 				res.type("json");
 
-				res.status(302).json({
+				res.status(200).json({
 					request: {
 						type: "GET",
 						url: `${req.baseUrl}/${id}`

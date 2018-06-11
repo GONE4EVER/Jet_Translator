@@ -8,7 +8,7 @@ function getCertain(req, res) {
 		.exec()
 		.then((result) => {
 			if (result) {
-				res.status(302).json({
+				res.status(200).json({
 					request: {
 						type: "GET",
 						url: `${req.baseUrl}/${id}`

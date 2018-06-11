@@ -20,8 +20,6 @@ function update(req, res) {
 
 	patchResult
 		.then((result) => {
-			console.log(result);
-
 			res.status(200).json({
 				message: result.nModified === 1 ? "Updated successfully" : "Item is already up-to-date",
 				req: {

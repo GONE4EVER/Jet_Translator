@@ -1,21 +1,30 @@
 import {JetView} from "webix-jet";
 import {groups} from "../models/groups";
 
+const SIDEMENU_ID = "top:sidemenu";
+const MENU_HEADER_ID = "top:sidemenu:header";
+
+const getSideMenuId = () => SIDEMENU_ID;
+const getMenuHeaderId = () => MENU_HEADER_ID;
+
+
 export default class TopView extends JetView {
 	config() {
 		const _ = this.app.getService("locale")._;
 
 		const header = {
-			id: "header",
+			id: getMenuHeaderId(),
 			type: "header",
 			template() {
-				return $$("topmenu").getItem($$("topmenu").getFirstId()).value;
+				const menu = $$(getSideMenuId());
+
+				return menu.getItem(menu.getFirstId()).value;
 			}
 		};
 
 		const menu = {
 			view: "menu",
-			id: "topmenu",
+			id: getSideMenuId(),
 			width: 180,
 			layout: "y",
 			select: true,
@@ -31,10 +40,11 @@ export default class TopView extends JetView {
 				onAfterRender() {
 					this.select(this.getFirstId());
 				},
-				onSelectChange: () => {
-					const item = $$("topmenu").getSelectedItem();
-					$$("header").config.template = webix.template(item.value);
-					$$("header").refresh();
+				onSelectChange() {
+					const item = this.getSelectedItem();
+
+					$$(getMenuHeaderId()).config.template = webix.template(item.value);
+					$$(getMenuHeaderId()).refresh();
 				},
 				onItemClick(id) {
 					if (id !== "exit") {
