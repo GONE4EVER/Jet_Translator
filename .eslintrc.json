@@ -5,6 +5,7 @@
     },
     "globals":{
         "webix":true,
+        "$$":true,
         "scheduler":true,
         "APPNAME":true, "VERSION":true, "PRODUCTION":true
     },
@@ -13,6 +14,10 @@
         "sourceType": "module"
     },
     "rules": {
+        "no-debugger": "off",
+        "class-methods-use-this": "off",
+        "no-debugger": "off",
+        "no-param-reassign": "off",
         "indent": [
             "error",
             "tab",

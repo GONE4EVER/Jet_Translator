@@ -1,23 +1,61 @@
-import {JetView, plugins} from "webix-jet";
+import {JetView} from "webix-jet";
+import {groups} from "../models/groups";
+
+const SIDEMENU_ID = "top:sidemenu";
+const MENU_HEADER_ID = "top:sidemenu:header";
+
+const getSideMenuId = () => SIDEMENU_ID;
+const getMenuHeaderId = () => MENU_HEADER_ID;
+
 
 export default class TopView extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
+
 		const header = {
-			type: "header", template: this.app.config.name
+			id: getMenuHeaderId(),
+			type: "header",
+			template() {
+				const menu = $$(getSideMenuId());
+
+				return menu.getItem(menu.getFirstId()).value;
+			}
 		};
 
 		const menu = {
 			view: "menu",
-			id: "top:menu",
+			id: getSideMenuId(),
 			width: 180,
 			layout: "y",
 			select: true,
 			template: "<span class='webix_icon fa-#icon#'></span> #value# ",
 			data: [
-				{value: "DashBoard", id: "start", icon: "envelope-o", click() {}},
-				{value: "Data",		 id: "data", icon: "briefcase", click() {}},
-				{value: "Exit", id: "exit", icon: "", click() {}}
-			]
+				{value: _("Dictionary"), id: "dictionary", icon: "briefcase"},
+				{value: _("New test"), id: "test", icon: "plus-square"},
+				{value: _("History"), id: "history", icon: "history"},
+				{value: _("Settings"), id: "settings", icon: "cog"},
+				{value: _("Exit"), id: "exit", icon: "sign-out"}
+			],
+			on: {
+				onAfterRender() {
+					this.select(this.getFirstId());
+				},
+				onSelectChange() {
+					const item = this.getSelectedItem();
+
+					$$(getMenuHeaderId()).config.template = webix.template(item.value);
+					$$(getMenuHeaderId()).refresh();
+				},
+				onItemClick(id) {
+					if (id !== "exit") {
+						let item = this.getItem(id);
+						this.$scope.show(`./${item.id}`);
+					}
+					else {
+						this.$scope.logOut();
+					}
+				}
+			}
 		};
 
 
@@ -50,6 +88,31 @@ export default class TopView extends JetView {
 		return ui;
 	}
 	init() {
-		this.use(plugins.Menu, "top:menu");
+		this.on(this.app, "onGroupContentRequest", (sourceHandler, targetHandler, groupId) => {
+			let groupName = sourceHandler.getItem(groupId).name;
+			$$("groupContentHeaderTemplate").setHTML(`<div style = 'text-align: center'>${groupName}-group content</div>`);
+			$$("groupContentHeaderTemplate").refresh();
+
+			targetHandler.clearAll();
+			for (let group of groups.getItem(groups.getFirstId())) {
+				if (group.groupID === groupId) {
+					targetHandler.parse(group.words);
+					break;
+				}
+			}
+		});
+
+		this.on(this.app, "onSelect", (sourceHandler, targetHandler, groupId, ignoredHandler) => {
+			if (ignoredHandler) {
+				ignoredHandler.clear();
+			}
+			else if (!$$("groupPanel").getValues().name) {
+				$$("groupPanel").setValues($$("groupList").getSelectedItem());
+			}
+			targetHandler.setValues(sourceHandler.getItem(groupId));
+		});
+	}
+	logOut() {
+		this.show("/unlogged/unlogged.logIn");
 	}
 }
