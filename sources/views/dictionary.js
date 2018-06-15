@@ -8,11 +8,11 @@ export default class DictionatyTopView extends JetView {
 		return layout;
 	}
 	init() {
-		getAllWords().then((res) => {
-			$$("allList").parse(res.json().content);
-		});
-		getAllGroups().then((res) => {
-			$$("groupList").parse(res.json().content);
-		});
+		let promises = [getAllWords(), getAllGroups()];
+		Promise.all(promises)
+			.then((res) => {
+				$$("allList").parse(res[0].json().content);
+				$$("groupList").parse(res[1].json().content);
+			});
 	}
 }

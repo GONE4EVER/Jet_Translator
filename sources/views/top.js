@@ -3,11 +3,11 @@ import {groups} from "../models/groups";
 
 const SIDEMENU_ID = "top:sidemenu";
 const MENU_HEADER_ID = "top:sidemenu:header";
-const DICTIONARY_MENU_ID = "top:sidemenu:dictionary";
-const TEST_MENU_ID = "top:sidemenu:dictionary";
-const HISTORY_MENU_ID = "top:sidemenu:dictionary";
-const SETTINGS_MENU_ID = "top:sidemenu:dictionary";
-const EXIT_MENU_ID = "top:sidemenu:dictionary";
+const DICTIONARY_MENU_ID = "dictionary";
+const TEST_MENU_ID = "test";
+const HISTORY_MENU_ID = "history";
+const SETTINGS_MENU_ID = "settings";
+const EXIT_MENU_ID = "exit";
 
 const getSideMenuId = () => SIDEMENU_ID;
 const getMenuHeaderId = () => MENU_HEADER_ID;
