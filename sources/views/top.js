@@ -3,9 +3,19 @@ import {groups} from "../models/groups";
 
 const SIDEMENU_ID = "top:sidemenu";
 const MENU_HEADER_ID = "top:sidemenu:header";
+const DICTIONARY_MENU_ID = "top:sidemenu:dictionary";
+const TEST_MENU_ID = "top:sidemenu:dictionary";
+const HISTORY_MENU_ID = "top:sidemenu:dictionary";
+const SETTINGS_MENU_ID = "top:sidemenu:dictionary";
+const EXIT_MENU_ID = "top:sidemenu:dictionary";
 
 const getSideMenuId = () => SIDEMENU_ID;
 const getMenuHeaderId = () => MENU_HEADER_ID;
+const getDictionaryInMenuId = () => DICTIONARY_MENU_ID;
+const getTestInMenuId = () => TEST_MENU_ID;
+const getHistoryInMenuId = () => HISTORY_MENU_ID;
+const getSettingsInMenuId = () => SETTINGS_MENU_ID;
+const getExitInMenuId = () => EXIT_MENU_ID;
 
 
 export default class TopView extends JetView {
@@ -30,11 +40,11 @@ export default class TopView extends JetView {
 			select: true,
 			template: "<span class='webix_icon fa-#icon#'></span> #value# ",
 			data: [
-				{value: _("Dictionary"), id: "dictionary", icon: "briefcase"},
-				{value: _("New test"), id: "test", icon: "plus-square"},
-				{value: _("History"), id: "history", icon: "history"},
-				{value: _("Settings"), id: "settings", icon: "cog"},
-				{value: _("Exit"), id: "exit", icon: "sign-out"}
+				{value: _("Dictionary"), id: getDictionaryInMenuId(), icon: "briefcase"},
+				{value: _("New test"), id: getTestInMenuId(), icon: "plus-square"},
+				{value: _("History"), id: getHistoryInMenuId(), icon: "history"},
+				{value: _("Settings"), id: getSettingsInMenuId(), icon: "cog"},
+				{value: _("Exit"), id: getExitInMenuId(), icon: "sign-out"}
 			],
 			on: {
 				onAfterRender() {
