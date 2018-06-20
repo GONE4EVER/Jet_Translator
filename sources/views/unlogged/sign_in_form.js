@@ -1,16 +1,16 @@
 import {JetView} from "webix-jet";
 
-export default class LogInForm extends JetView {
+export default class signInForm extends JetView {
 	config() {
-		const logInBtn = {
+		const signInBtn = {
 			cols: [
 				{
 					view: "button",
 					width: 100,
-					label: "Log In",
+					label: "Sign In",
 					click() {
-						if ($$("logInForm").validate()) {
-							this.$scope.app.callEvent("onAuthentication", [$$("logInForm").getValues()]);
+						if ($$("signInForm").validate()) {
+							this.$scope.app.callEvent("onAuthentication", [$$("signInForm").getValues()]);
 						}
 					}
 				}
@@ -38,7 +38,7 @@ export default class LogInForm extends JetView {
 		};
 
 		const form = {
-			id: "logInForm",
+			id: "signInForm",
 			view: "form",
 			width: 700,
 			height: 400,
@@ -46,7 +46,7 @@ export default class LogInForm extends JetView {
 				{
 					view: "template",
 					type: "header",
-					template: "Log In",
+					template: "Sign In",
 					borderless: true
 				},
 				{
@@ -80,7 +80,7 @@ export default class LogInForm extends JetView {
 						rememCheckBox,
 						{
 							cols: [
-								{gravity: 0.55}, logInBtn, forgotPass
+								{gravity: 0.55}, signInBtn, forgotPass
 							]
 						}
 					]

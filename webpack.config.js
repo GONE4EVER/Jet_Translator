@@ -1,64 +1,81 @@
-let path = require("path");
-let webpack = require("webpack");
+const webpack = require("webpack");
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
+const pack = require("./package.json");
 
-module.exports = function (env) {
-	let pack = require("./package.json");
-	// let ExtractTextPlugin = require("extract-text-webpack-plugin");
-	let production = !!(env && env.production === "true");
-	let babelSettings = {
-		extends: path.join(__dirname, "/.babelrc")
-	};
+const babelSettings = {
+	extends: path.join(__dirname, "/.babelrc")
+};
 
-	let config = {
-		entry: "./sources/myapp.js",
-		output: {
-			path: path.join(__dirname, "codebase"),
-			publicPath: "/codebase/",
-			filename: "myapp.js"
-		},
-		devtool: "inline-source-map",
-		module: {
-			rules: [
-				{
-					test: /\.js$/,
-					loader: `babel-loader?${JSON.stringify(babelSettings)}`
-				},
-				{
-					test: /\.(svg|png|jpg|gif)$/,
-					loader: "url-loader?limit=25000"
+module.exports = {
+	mode: "development",
+	entry: {
+		filename: "./sources/app.js"
+	},
+	output: {
+		filename: "./codebase/bundle.js",
+		path: path.resolve(__dirname, "JetTranslator/"),
+		publicPath: "/JetTranslator/"
+	},
+	devtool: "inline-source-map",
+	devServer: {
+		contentBase: "./JetTranslator/"
+	},
+	module: {
+		rules: [
+			{
+				test: /\.js/,
+				loader: `babel-loader?${JSON.stringify(babelSettings)}`,
+				exclude: /(node_modules)/
+			},
+			{
+				test: /\.css$/,
+				exclude: /(node_modules)/,
+				use: [
+					{loader: "style-loader"},
+					{
+						loader: "css-loader",
+						options: {
+							modules: true
+						}
+					}
+					// {
+					// 	loader: "resolve-url-loader"
+					// }
+				]
+			},
+			{
+				test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
+				loader: "url-loader",
+				options: {
+					limit: 10000
 				}
-				// {
-				// test: /\.(less|css)$/,
-				// loader: ExtractTextPlugin.extract("css-loader!less-loader")
-				// }
-			]
-		},
-		resolve: {
-			extensions: [".js"],
-			modules: ["./sources", "node_modules"],
-			alias: {
-				"jet-views": path.resolve(__dirname, "sources/views"),
-				"jet-locales": path.resolve(__dirname, "sources/locales")
 			}
-		},
-		plugins: [
-			// new ExtractTextPlugin("./myapp.css"),
-			new webpack.DefinePlugin({
-				VERSION: `"${pack.version}"`,
-				APPNAME: `"${pack.name}"`,
-				PRODUCTION: production
-			})
 		]
-	};
-
-	if (production) {
-		config.plugins.push(
-			new webpack.optimize.UglifyJsPlugin({
-				test: /\.js$/
-			})
-		);
-	}
-
-	return config;
-}
-;
+	},
+	resolve: {
+		extensions: [".js"],
+		modules: ["./sources", "node_modules"],
+		alias: {
+			"jet-views": path.resolve(__dirname, "sources/views/"),
+			"jet-locales": path.resolve(__dirname, "sources/locales/")
+		}
+	},
+	plugins: [new webpack.DefinePlugin({
+		VERSION: `"${pack.version}"`,
+		APPNAME: `"${pack.name}"`
+	}),
+	new HtmlWebpackPlugin({template: "./index.html"}),
+	new CopyWebpackPlugin([
+		{
+			from: "lib/",
+			to: "lib/"
+		}
+		/* {
+			from: "sources/styles/",
+			to: "styles/"
+		} */
+	])
+	]
+};

@@ -3,10 +3,17 @@ import {JetView} from "webix-jet";
 const PASSWORD_INPUT_ID = "registration:password:input";
 const PASSWORD_SECURITY_LEVEL_OUTPUT_ID = "registration:password:securityLevel";
 const REGISTRATION_FORM_ID = "registration:form";
+const EMAIL_INPUT_ID = "registration:emailInput";
+const NAME_INPUT_ID = "registration:nameInput";
+const CONFIRM_PASSWORD_ID = "registration:password:confirmation:input";
 
 const getPasswordInputId = () => PASSWORD_INPUT_ID;
 const getPasswordSecurityLevelId = () => PASSWORD_SECURITY_LEVEL_OUTPUT_ID;
 const getRegistrationFormId = () => REGISTRATION_FORM_ID;
+const getEmailInputId = () => EMAIL_INPUT_ID;
+const getNameId = () => NAME_INPUT_ID;
+const getPasswordConfrimationInputId = () => CONFIRM_PASSWORD_ID;
+
 
 function checkSecurityLevel() {
 	let len = $$(getPasswordInputId()).getValue().length;
@@ -21,6 +28,7 @@ function checkSecurityLevel() {
 
 function displaySecurityLevel() {
 	let ico = checkSecurityLevel();
+
 	$$(getPasswordSecurityLevelId()).setHTML(`<span style='font-size:25px;
 	color: ${ico[0]}' class='webix_icon fa-${ico[1]}'></span>`);
 }
@@ -34,12 +42,12 @@ export default class RegistrationForm extends JetView {
 			view: "form",
 			width: 800,
 			height: 450,
-			header: _("Register"),
+			header: _("Sign Up"),
 			rows: [
 				{
 					view: "template",
 					type: "header",
-					template: _("Register"),
+					template: _("Sign Up"),
 					bottomPadding: 0,
 					borderless: true
 				},
@@ -47,6 +55,7 @@ export default class RegistrationForm extends JetView {
 					height: 40
 				},
 				{
+					id: getNameId(),
 					name: "name",
 					attributes: {
 						maxlength: 20,
@@ -63,7 +72,7 @@ export default class RegistrationForm extends JetView {
 					invalidMessage: "Empty name field is not allowed"
 				},
 				{
-					id: "emailInput",
+					id: getEmailInputId(),
 					name: "email",
 					attributes: {
 						maxlength: 20,
@@ -81,7 +90,7 @@ export default class RegistrationForm extends JetView {
 					invalidMessage: _("Invalid E-Mail")
 				},
 				{
-					id: "passwordInput",
+					id: getPasswordInputId(),
 					name: "password",
 					type: "password",
 					view: "text",
@@ -97,6 +106,7 @@ export default class RegistrationForm extends JetView {
 					}
 				},
 				{
+					id: getPasswordConfrimationInputId(),
 					name: "confPass",
 					type: "password",
 					view: "text",

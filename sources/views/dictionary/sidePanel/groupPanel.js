@@ -22,17 +22,18 @@ const groupPanel = {
 					}
 				},
 				{view: "button",
-					value: "Delete",
-					type: "danger",
+					value: "Add New",
+					type: "form",
 					click() {
 
 					}
 				}
 			]
 		},
+
 		{view: "button",
-			value: "Add New",
-			type: "form",
+			value: "Delete",
+			type: "danger",
 			click() {
 
 			}

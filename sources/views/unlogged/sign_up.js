@@ -1,6 +1,6 @@
 import {JetView} from "webix-jet";
 // import {users} from "../../models/users";
-import RegistrationForm from "./registrationForm";
+import RegistrationForm from "./sign_up_form";
 import authorize from "../exportFunctions";
 
 export default class LogInView extends JetView {
@@ -21,22 +21,22 @@ export default class LogInView extends JetView {
 		});
 	}
 
-	register(val) {
-		// let userData = users.find(obj => obj.email === val.email || obj.name === val.name);
-		// if (userData.length) {
-		// 	webix.alert({
-		// 		title: "Error",
-		// 		type: "alert-error",
-		// 		text: _("User already exists"),
-		// 		callback: () => {
-		// 			$$("emailInput").focus();
-		// 		}
-		// 	});
-		// }
-		// else {
-		// 	this.userDataPOST(val);
-		// }
-	}
+	/* register(val) {
+		 let userData = users.find(obj => obj.email === val.email || obj.name === val.name);
+		 if (userData.length) {
+		 	webix.alert({
+		 		title: "Error",
+		 		type: "alert-error",
+		 		text: _("User already exists"),
+		 		callback: () => {
+		 			$$("emailInput").focus();
+		 		}
+		 	});
+		 }
+		else {
+			this.userDataPOST(val);
+		}
+	} */
 
 	userDataPOST(value) {
 		let currDate = new Date();

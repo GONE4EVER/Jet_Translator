@@ -7,10 +7,10 @@ webix.ready(() => {
 	let app = new JetApp({
 		id:	APPNAME,
 		version: VERSION,
-		start: "/unlogged/unlogged.registration",
+		start: "/unlogged/unlogged.sign_up",
 		routes: {
-			"/newuser": "/unlogged/unlogged.registration",
-			"/login": "/unlogged/unlogged.logIn",
+			"/sign_up": "/unlogged/unlogged.sign_up",
+			"/sign_in": "/unlogged/unlogged.sign_in",
 			"/dictionary": "/top/dictionary"
 		}
 	});

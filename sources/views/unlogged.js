@@ -14,8 +14,8 @@ export default class TopView extends JetView {
 			height: 50,
 			elements: [
 				{template: HEADER_TEXT, type: "header", borderless: "true"},
-				{view: "button", type: "icon", css: "whiteButton", id: "logIn", icon: "sign-in", label: _("<span>Log In</span>"), width: 100, click() { this.$scope.logIn(); }},
-				{view: "button", type: "icon", css: "whiteButton", id: "register", icon: "user-circle", label: _("<span>Register</span>"), width: 100, click() { this.$scope.registration(); }}
+				{view: "button", type: "icon", css: "whiteButton", id: "sign_in", icon: "sign-in", label: _("<span>Sign In</span>"), width: 100, click() { this.$scope.signIn(); }},
+				{view: "button", type: "icon", css: "whiteButton", id: "sign_up", icon: "user-circle", label: _("<span>Sign Up</span>"), width: 100, click() { this.$scope.signUp(); }}
 			]
 		};
 
@@ -40,11 +40,11 @@ export default class TopView extends JetView {
 
 	}
 
-	logIn() {
-		this.show("./unlogged.logIn");
+	signIn() {
+		this.show("./unlogged.sign_in");
 	}
 
-	registration() {
-		this.show("./unlogged.registration");
+	signUp() {
+		this.show("./unlogged.sign_up");
 	}
 }

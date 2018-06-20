@@ -1,7 +1,7 @@
 import {JetView} from "webix-jet";
 // import {users} from "../models/users";
 import authorize from "../exportFunctions";
-import LogInForm from "./logInForm";
+import LogInForm from "./sign_in_form";
 
 export default class LogInView extends JetView {
 	config() {
@@ -16,7 +16,7 @@ export default class LogInView extends JetView {
 	}
 
 	register() {
-		this.show("/top/registration");
+		this.show("/top/sign_up");
 	}
 
 	init() {
