@@ -132,3 +132,7 @@ export default class TopView extends JetView {
 		this.show(`/unlogged/${Navigator.getSignInUrl()}`);
 	}
 }
+
+export {
+	getGroupContentRequestEventId
+};
