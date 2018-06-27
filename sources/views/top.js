@@ -1,21 +1,27 @@
 import {JetView} from "webix-jet";
+import * as Navigator from "./helpers/navigationConstants";
 import {groups} from "../models/groups";
+import {getGroupContentHeaderId, getGroupListId} from "./dictionary/content";
+import {getGroupPanelId} from "./dictionary/sidePanel/groupPanel";
 
-const SIDEMENU_ID = "top:sidemenu";
-const MENU_HEADER_ID = "top:sidemenu:header";
 const DICTIONARY_MENU_ID = "dictionary";
-const TEST_MENU_ID = "test";
-const HISTORY_MENU_ID = "history";
-const SETTINGS_MENU_ID = "settings";
 const EXIT_MENU_ID = "exit";
+const HISTORY_MENU_ID = "history";
+const MENU_HEADER_ID = "top:sidemenu:header";
+const SETTINGS_MENU_ID = "settings";
+const SIDEMENU_ID = "top:sidemenu";
+const TEST_MENU_ID = "test";
 
-const getSideMenuId = () => SIDEMENU_ID;
-const getMenuHeaderId = () => MENU_HEADER_ID;
 const getDictionaryInMenuId = () => DICTIONARY_MENU_ID;
-const getTestInMenuId = () => TEST_MENU_ID;
-const getHistoryInMenuId = () => HISTORY_MENU_ID;
-const getSettingsInMenuId = () => SETTINGS_MENU_ID;
 const getExitInMenuId = () => EXIT_MENU_ID;
+const getHistoryInMenuId = () => HISTORY_MENU_ID;
+const getMenuHeaderId = () => MENU_HEADER_ID;
+const getTestInMenuId = () => TEST_MENU_ID;
+const getSideMenuId = () => SIDEMENU_ID;
+const getSettingsInMenuId = () => SETTINGS_MENU_ID;
+
+const GROUP_CONTENT_REQUEST_EVENT_ID = "onGroupContentRequest";
+const getGroupContentRequestEventId = () => GROUP_CONTENT_REQUEST_EVENT_ID;
 
 
 export default class TopView extends JetView {
@@ -98,10 +104,10 @@ export default class TopView extends JetView {
 		return ui;
 	}
 	init() {
-		this.on(this.app, "onGroupContentRequest", (sourceHandler, targetHandler, groupId) => {
+		this.on(this.app, getGroupContentRequestEventId(), (sourceHandler, targetHandler, groupId) => {
 			let groupName = sourceHandler.getItem(groupId).name;
-			$$("groupContentHeaderTemplate").setHTML(`<div style = 'text-align: center'>${groupName}-group content</div>`);
-			$$("groupContentHeaderTemplate").refresh();
+			$$(getGroupContentHeaderId()).setHTML(`<div style = 'text-align: center'>${groupName}-group content</div>`);
+			$$(getGroupContentHeaderId()).refresh();
 
 			targetHandler.clearAll();
 			for (let group of groups.getItem(groups.getFirstId())) {
@@ -116,13 +122,13 @@ export default class TopView extends JetView {
 			if (ignoredHandler) {
 				ignoredHandler.clear();
 			}
-			else if (!$$("groupPanel").getValues().name) {
-				$$("groupPanel").setValues($$("groupList").getSelectedItem());
+			else if (!$$(getGroupPanelId()).getValues().name) {
+				$$(getGroupPanelId()).setValues($$(getGroupListId()).getSelectedItem());
 			}
 			targetHandler.setValues(sourceHandler.getItem(groupId));
 		});
 	}
 	logOut() {
-		this.show("/unlogged/unlogged.logIn");
+		this.show(`/unlogged/${Navigator.getSignInUrl()}`);
 	}
 }

@@ -1,7 +1,7 @@
 import {JetView} from "webix-jet";
 // import {users} from "../../models/users";
 import RegistrationForm from "./sign_up_form";
-import authorize from "../exportFunctions";
+import authorize from "../helpers/exportFunctions";
 
 export default class LogInView extends JetView {
 	config() {

@@ -1,5 +1,4 @@
 import {JetApp, plugins} from "webix-jet";
-import "./styles/app.css";
 
 webix.ready(() => {
 	webix.i18n.parseFormat = "%d-%m-%Y";
