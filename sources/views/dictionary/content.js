@@ -1,15 +1,20 @@
 import sidePanel from "./sidePanel/index";
 import {deleteWord, getAllWords} from "../../models/words";
 import {getGroupPanelId} from "./sidePanel/groupPanel";
+import {getGroupContentRequestEventId} from "../top";
 
+const GROUP_CONTENT_ID = "top:dictionary:groupContent";
 const GROUP_CONTENT_HEADER_ID = "groupContentHeaderTemplate";
-const GROUP_LIST_ID = "groupList";
+const GROUP_LIST_ID = "top:dictionary:groupList";
+const FULL_CONTENT_LIST_ID = "top:dictionary:fullContentList";
 
-
+const getGroupContentId = () => GROUP_CONTENT_ID;
 const getGroupContentHeaderId = () => GROUP_CONTENT_HEADER_ID;
+const getGroupListId = () => GROUP_LIST_ID;
+const getFullContentListId = () => FULL_CONTENT_LIST_ID;
 
 const all = {
-	id: "allList",
+	id: getFullContentListId(),
 	view: "list",
 	maxWidth: 450,
 	select: true,
@@ -22,14 +27,14 @@ const all = {
 				cancel: "Cancel",
 				callback: (ok) => {
 					if (ok) {
-						let item = $$("allList").getItem(id);
+						let item = $$(getFullContentListId()).getItem(id);
 						deleteWord(item._id)
 							.then((res) => {
 								webix.message({text: res.json().message});
-								$$("allList").remove(item._id);
+								$$(getFullContentListId()).remove(item._id);
 								getAllWords().then((response) => {
-									$$("allList").clearAll();
-									$$("allList").parse(response.json().content);
+									$$(getFullContentListId()).clearAll();
+									$$(getFullContentListId()).parse(response.json().content);
 								});
 							})
 							.catch((err) => {
@@ -42,35 +47,37 @@ const all = {
 	},
 	on: {
 		onAfterSelect(id) {
-			$$("groupContent").unselectAll();
+			$$(getGroupContentId()).unselectAll();
 			this.$scope.app.callEvent("onSelect", [this, $$("wordPanel"), id, $$(getGroupPanelId())]);
 		}
 	}
 };
 
 const groupsList = {
-	id: "",
+	id: getGroupListId(),
 	view: "list",
 	maxWidth: 450,
 	select: true,
 	template: "#name# (#created#)",
 	on: {
 		onAfterSelect(id) {
-			this.$scope.app.callEvent("onGroupContentRequest", [this, $$("groupContent"), id]);
-			this.$scope.app.callEvent("onSelect", [this, $$(getGroupPanelId()), id, $$("wordPanel")]);
+			this.$scope.app
+				.callEvent(getGroupContentRequestEventId(), [this, $$(getGroupContentId()), id]);
+			this.$scope.app
+				.callEvent("onSelect", [this, $$(getGroupPanelId()), id, $$("wordPanel")]);
 		}
 	}
 };
 
 const groupContent = {
-	id: "groupContent",
+	id: getGroupContentId(),
 	view: "list",
 	maxWidth: 450,
 	select: true,
 	template: "#value# (#partOfSpeech#)",
 	on: {
 		onAfterSelect(id) {
-			$$("allList").unselectAll();
+			$$(getFullContentListId()).unselectAll();
 			this.$scope.app.callEvent("onSelect", [this, $$("wordPanel"), id]);
 		}
 	}
@@ -120,5 +127,7 @@ const layout = {
 
 export default layout;
 export {
-	getGroupContentHeaderId
+	getGroupListId,
+	getGroupContentHeaderId,
+	getFullContentListId
 };

@@ -1,8 +1,11 @@
 import {updateWord, deleteTranslation} from "../../../models/words";
 
+const WORD_PANEL_ID = "top:dictionary:wordPanel";
+
+const getWordPanelId = () => WORD_PANEL_ID;
 
 function Update() {
-	let data = $$("wordPanel").getValues();
+	let data = $$(getWordPanelId()).getValues();
 	let updateOps = [];
 
 	for (let key in data) {
@@ -28,7 +31,7 @@ function removeTranslation() {
 
 const wordPanel = {
 	view: "form",
-	id: "wordPanel",
+	id: getWordPanelId(),
 	minWidth: 200,
 	elements: [
 		{view: "template", template: "Word info", type: "section"},
@@ -38,14 +41,16 @@ const wordPanel = {
 		{},
 		{
 			cols: [
-				{view: "button",
+				{
+					view: "button",
 					value: "Update",
 					click: Update
 				},
-				{view: "button",
+				{
+					view: "button",
 					value: "Clear",
 					click() {
-						$$("wordPanel").clear();
+						$$(getWordPanelId()).clear();
 					}
 				},
 				{
@@ -53,13 +58,17 @@ const wordPanel = {
 					value: "Add New",
 					type: "form",
 					click() {
-						webix.ajax().post("http://localhost:3000/api/words/", $$("wordPanel").getValues())
-							.then(() => {});
+						webix.ajax()
+							.post("http://localhost:3000/api/words/", $$(getWordPanelId()).getValues())
+							.then(() => {
+
+							});
 					}
 				}
 			]
 		},
-		{view: "button",
+		{
+			view: "button",
 			value: "Remove translation",
 			type: "danger",
 			click: removeTranslation
