@@ -40,9 +40,6 @@ module.exports = {
 							modules: true
 						}
 					}
-					// {
-					// 	loader: "resolve-url-loader"
-					// }
 				]
 			},
 			{
@@ -71,11 +68,11 @@ module.exports = {
 		{
 			from: "lib/",
 			to: "lib/"
-		}
-		/* {
+		},
+		{
 			from: "sources/styles/",
-			to: "styles/"
-		} */
+			to: "codebase/styles/"
+		}
 	])
 	]
 };
