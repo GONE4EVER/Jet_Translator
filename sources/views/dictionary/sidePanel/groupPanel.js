@@ -1,6 +1,10 @@
+const GROUPS_PANEL_ID = "top:dictionary:groupPanel";
+const getGroupPanelId = () => GROUPS_PANEL_ID;
+
+
 const groupPanel = {
 	view: "form",
-	id: "groupPanel",
+	id: getGroupPanelId(),
 	minWidth: 200,
 	elements: [
 		{view: "template", template: "Group info", type: "section"},
@@ -45,3 +49,6 @@ const groupPanel = {
 };
 
 export default groupPanel;
+export {
+	getGroupPanelId
+};

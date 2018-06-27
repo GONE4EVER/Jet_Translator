@@ -1,5 +1,12 @@
 import sidePanel from "./sidePanel/index";
 import {deleteWord, getAllWords} from "../../models/words";
+import {getGroupPanelId} from "./sidePanel/groupPanel";
+
+const GROUP_CONTENT_HEADER_ID = "groupContentHeaderTemplate";
+const GROUP_LIST_ID = "groupList";
+
+
+const getGroupContentHeaderId = () => GROUP_CONTENT_HEADER_ID;
 
 const all = {
 	id: "allList",
@@ -36,13 +43,13 @@ const all = {
 	on: {
 		onAfterSelect(id) {
 			$$("groupContent").unselectAll();
-			this.$scope.app.callEvent("onSelect", [this, $$("wordPanel"), id, $$("groupPanel")]);
+			this.$scope.app.callEvent("onSelect", [this, $$("wordPanel"), id, $$(getGroupPanelId())]);
 		}
 	}
 };
 
 const groupsList = {
-	id: "groupList",
+	id: "",
 	view: "list",
 	maxWidth: 450,
 	select: true,
@@ -50,7 +57,7 @@ const groupsList = {
 	on: {
 		onAfterSelect(id) {
 			this.$scope.app.callEvent("onGroupContentRequest", [this, $$("groupContent"), id]);
-			this.$scope.app.callEvent("onSelect", [this, $$("groupPanel"), id, $$("wordPanel")]);
+			this.$scope.app.callEvent("onSelect", [this, $$(getGroupPanelId()), id, $$("wordPanel")]);
 		}
 	}
 };
@@ -101,7 +108,7 @@ const layout = {
 					view: "toolbar",
 					height: 50,
 					elements: [
-						{view: "template", id: "groupContentHeaderTemplate", template: "", type: "header", borderless: "true"}
+						{view: "template", id: getGroupContentHeaderId(), template: "", type: "header", borderless: "true"}
 					]
 				},
 				groupContent
@@ -112,3 +119,6 @@ const layout = {
 };
 
 export default layout;
+export {
+	getGroupContentHeaderId
+};

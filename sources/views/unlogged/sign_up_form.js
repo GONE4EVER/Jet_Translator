@@ -110,7 +110,7 @@ export default class RegistrationForm extends JetView {
 					name: "confPass",
 					type: "password",
 					view: "text",
-					label: _("<div class = 'name'><b>Confirm Password</b></div>"),
+					label: `<div class = 'name'><b>${_("Confirm Password")}</b></div>`,
 					labelWidth: 250,
 					bottomPadding: 15,
 					width: 700,
