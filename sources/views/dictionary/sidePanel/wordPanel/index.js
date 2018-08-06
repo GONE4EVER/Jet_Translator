@@ -1,33 +1,8 @@
-import {updateWord} from "../../../models/words";
+import {update, removeTranslation} from "./functions";
 
 const WORD_PANEL_ID = "top:dictionary:wordPanel";
 
 const getWordPanelId = () => WORD_PANEL_ID;
-
-function Update() {
-	let data = $$(getWordPanelId()).getValues();
-	let updateOps = [];
-
-	for (let key in data) {
-		if (key.indexOf("id") === -1) {
-			updateOps.push({property: key, value: data[key]});
-		}
-	}
-	updateWord(data._id, updateOps)
-		.then((res) => {
-			webix.message({text: res.json().message});
-		});
-}
-
-function removeTranslation() {
-	const data = [{
-		deleteFlag: "true",
-		translation: `${$$("translation").getValue()}`
-	}];
-	// deleteTranslation()
-	console.log(data);
-}
-
 
 const wordPanel = {
 	id: getWordPanelId(),
@@ -36,7 +11,15 @@ const wordPanel = {
 	elements: [
 		{view: "template", template: "Word info", type: "section"},
 		{name: "value", id: "value", view: "text", label: "Value", labelWidth: 110, invalidMessage: "the field is empty", bottomPadding: 5},
-		{name: "translation", id: "translation", view: "textarea", label: "Translation", labelWidth: 110, invalidMessage: "invalid value", bottomPadding: 5},
+		{
+			name: "translation",
+			id: "translation",
+			view: "list",
+			label: "Translation",
+			labelWidth: 110,
+			invalidMessage: "invalid value",
+			bottomPadding: 5
+		},
 		{name: "partOfSpeech", id: "partOfSpeech", view: "text", label: "Part of speech", labelWidth: 110, invalidMessage: "invalid value", bottomPadding: 15},
 		{},
 		{
@@ -44,7 +27,7 @@ const wordPanel = {
 				{
 					view: "button",
 					value: "Update",
-					click: Update
+					click: update
 				},
 				{
 					view: "button",
@@ -58,10 +41,11 @@ const wordPanel = {
 					value: "Add New",
 					type: "form",
 					click() {
-						webix.ajax()
+						console.log(this.getParentView().getValues());
+						/* webix.ajax()
 							.post("http://localhost:3000/api/words/", $$(getWordPanelId()).getValues())
 							.then(() => {})
-							.catch(() => {});
+							.catch(() => {}); */
 					}
 				}
 			]

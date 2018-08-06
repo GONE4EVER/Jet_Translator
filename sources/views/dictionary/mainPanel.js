@@ -2,7 +2,7 @@ import sidePanel from "./sidePanel/index";
 import {deleteWord, getAllWords} from "../../models/words";
 import {getGroupPanelId} from "./sidePanel/groupPanel";
 import {getGroupContentRequestEventId} from "../top";
-import {getWordPanelId} from "./sidePanel/wordPanel";
+import {getWordPanelId} from "./sidePanel/wordPanel/index";
 import {onGroupContentSelectEventId} from "../helpers/events";
 
 const GROUP_CONTENT_ID = "top:dictionary:groupContent";
