@@ -1,8 +1,11 @@
 import {JetView} from "webix-jet";
 import * as Navigator from "./helpers/navigationConstants";
-import {groups} from "../models/groups";
-import {getGroupContentHeaderId, getGroupListId} from "./dictionary/content";
-import {getGroupPanelId} from "./dictionary/sidePanel/groupPanel";
+import {
+	onGetGroupContentRequestEvent,
+	onGroupContentSelectEvent,
+	getGroupContentRequestEventId,
+	onGroupContentSelectEventId
+} from "./helpers/events";
 
 const DICTIONARY_MENU_ID = "dictionary";
 const EXIT_MENU_ID = "exit";
@@ -19,9 +22,6 @@ const getMenuHeaderId = () => MENU_HEADER_ID;
 const getTestInMenuId = () => TEST_MENU_ID;
 const getSideMenuId = () => SIDEMENU_ID;
 const getSettingsInMenuId = () => SETTINGS_MENU_ID;
-
-const GROUP_CONTENT_REQUEST_EVENT_ID = "onGroupContentRequest";
-const getGroupContentRequestEventId = () => GROUP_CONTENT_REQUEST_EVENT_ID;
 
 
 export default class TopView extends JetView {
@@ -104,29 +104,8 @@ export default class TopView extends JetView {
 		return ui;
 	}
 	init() {
-		this.on(this.app, getGroupContentRequestEventId(), (sourceHandler, targetHandler, groupId) => {
-			let groupName = sourceHandler.getItem(groupId).name;
-			$$(getGroupContentHeaderId()).setHTML(`<div style = 'text-align: center'>${groupName}-group content</div>`);
-			$$(getGroupContentHeaderId()).refresh();
-
-			targetHandler.clearAll();
-			for (let group of groups.getItem(groups.getFirstId())) {
-				if (group.groupID === groupId) {
-					targetHandler.parse(group.words);
-					break;
-				}
-			}
-		});
-
-		this.on(this.app, "onSelect", (sourceHandler, targetHandler, groupId, ignoredHandler) => {
-			if (ignoredHandler) {
-				ignoredHandler.clear();
-			}
-			else if (!$$(getGroupPanelId()).getValues().name) {
-				$$(getGroupPanelId()).setValues($$(getGroupListId()).getSelectedItem());
-			}
-			targetHandler.setValues(sourceHandler.getItem(groupId));
-		});
+		this.on(this.app, getGroupContentRequestEventId(), onGetGroupContentRequestEvent);
+		this.on(this.app, onGroupContentSelectEventId(), onGroupContentSelectEvent);
 	}
 	logOut() {
 		this.show(`/unlogged/${Navigator.getSignInUrl()}`);

@@ -11,17 +11,17 @@ const babelSettings = {
 module.exports = {
 	mode: "development",
 	entry: {
-		filename: "./sources/app.js"
+		main: "./sources/app.js"
 	},
 	output: {
-		filename: "./codebase/bundle.js",
+		filename: "./codebase/[name].js",
 		path: path.resolve(__dirname, "JetTranslator/"),
-		publicPath: "/JetTranslator/"
+		publicPath: "/JetTranslator/" //
 	},
 	devtool: "inline-source-map",
-	devServer: {
-		contentBase: "./JetTranslator/"
-	},
+	devServer: { //
+		contentBase: "./JetTranslator/" //
+	}, //
 	module: {
 		rules: [
 			{

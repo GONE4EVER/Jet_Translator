@@ -20,9 +20,10 @@ app.use((req, res, next) => {
 	res.header("Access-Control-Allow-Origin", "*");
 	res.header(
 		"Access-Control-Allow-Headers",
-		"X-Requested-With, Content-Type, Accept, If-Modified-Since, ETag"
+		"X-Requested-With, Content-Type, Accept, If-Modified-Since, ETag, Cache-Control"
 	);
 	res.header("Access-Control-Allow-Methods", "GET, POST, DELETE, PATCH, OPTIONS");
+	// res.header("Cache-Control", `max-age=${process.env.MAX_AGE}`);
 
 	res.type("json");
 

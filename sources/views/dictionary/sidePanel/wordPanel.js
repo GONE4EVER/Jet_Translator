@@ -1,4 +1,4 @@
-import {updateWord, deleteTranslation} from "../../../models/words";
+import {updateWord} from "../../../models/words";
 
 const WORD_PANEL_ID = "top:dictionary:wordPanel";
 
@@ -30,8 +30,8 @@ function removeTranslation() {
 
 
 const wordPanel = {
-	view: "form",
 	id: getWordPanelId(),
+	view: "form",
 	minWidth: 200,
 	elements: [
 		{view: "template", template: "Word info", type: "section"},
@@ -60,9 +60,8 @@ const wordPanel = {
 					click() {
 						webix.ajax()
 							.post("http://localhost:3000/api/words/", $$(getWordPanelId()).getValues())
-							.then(() => {
-
-							});
+							.then(() => {})
+							.catch(() => {});
 					}
 				}
 			]
@@ -80,3 +79,6 @@ const wordPanel = {
 };
 
 export default wordPanel;
+export {
+	getWordPanelId
+};
