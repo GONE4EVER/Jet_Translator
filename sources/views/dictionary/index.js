@@ -1,7 +1,7 @@
 import {JetView} from "webix-jet";
-import {getAllWords} from "../models/words";
-import {getAllGroups} from "../models/groups";
-import layout, {getGroupListId, getFullContentListId} from "./dictionary/content";
+import {getAllWords} from "../../models/words";
+import {getAllGroups} from "../../models/groups";
+import layout, {getGroupListId, getFullContentListId} from "./mainPanel";
 
 export default class DictionatyTopView extends JetView {
 	config() {

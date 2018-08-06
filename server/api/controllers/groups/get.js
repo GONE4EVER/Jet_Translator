@@ -4,7 +4,7 @@ function getCertain(req, res) {
 	const id = req.params.id;
 	Group.findById(id)
 		.select("_id name created words")
-		.populate([{path: "words", model: "Word", select: "_id value"}])
+		.populate([{path: "words", model: "Word", select: "_id value translation"}])
 		.exec()
 		.then((result) => {
 			if (result) {

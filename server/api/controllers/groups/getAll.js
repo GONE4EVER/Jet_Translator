@@ -3,7 +3,7 @@ const Group = require("../../models/group");
 function getAll(req, res) {
 	Group.find()
 		.select("_id name created words")
-		.populate([{path: "words", model: "Word", select: "_id value"}])
+		.populate([{path: "words", model: "Word", select: "_id value translation"}])
 		.exec()
 		.then((result) => {
 			const response = result.map(item => ({
