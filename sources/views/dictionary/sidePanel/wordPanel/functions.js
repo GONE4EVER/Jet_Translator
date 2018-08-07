@@ -1,5 +1,5 @@
-import {updateWord} from "../../../../models/words";
-import {getWordPanelId} from ".";
+import {updateWord, deleteTranslation} from "../../../../models/words";
+import {getWordPanelId, getTranslationsListId} from ".";
 
 
 function update() {
@@ -7,24 +7,39 @@ function update() {
 	let updateOps = [];
 
 	for (let key in data) {
-		if (key.indexOf("id") === -1) {
+		if (key.indexOf("id") === -1 || key.indexOf("_id") === -1) {
 			updateOps.push({property: key, value: data[key]});
 		}
 	}
 
-	updateWord(data._id, updateOps)
+	console.log(updateOps);
+
+	/* updateWord(data._id, updateOps)
 		.then((res) => {
 			webix.message({text: res.json().message});
-		});
+		}); */
 }
 
-function removeTranslation() {
-	const data = [{
-		deleteFlag: "true",
-		translation: `${$$("translation").getValue()}`
-	}];
-	// deleteTranslation()
-	console.log(data);
+function removeTranslation(data) {
+	const options = [
+		{
+			property: "deleteFlag",
+			value: "true"
+		},
+		{
+			property: "translation",
+			value: `${$$(getTranslationsListId()).getSelectedItem().value}`
+		}
+	];
+
+	deleteTranslation(data._id, options)
+		.then((res) => {
+			const list = this.getParentView().getParentView().queryView({view: "list"});
+
+			list.remove(data.id);
+			list.refresh();
+		})
+		.catch();
 }
 
 export {

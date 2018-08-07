@@ -1,6 +1,6 @@
 import {getGroupContentHeaderId, getGroupListId} from "../dictionary/mainPanel";
 import {groups} from "../../models/groups";
-import {getGroupPanelId} from "../dictionary/sidePanel/groupPanel/index.js";
+import {getGroupPanelId} from "../dictionary/sidePanel/groupPanel";
 
 const GROUP_CONTENT_REQUEST_EVENT_ID = "onGroupContentRequest";
 const GROUP_CONTENT_SELECT_EVENT_ID = "onGroupContentSelect";
@@ -23,17 +23,20 @@ const onGetGroupContentRequestEvent = (sourceHandler, targetHandler, groupId) =>
 
 
 const onGroupContentSelectEvent = (sourceHandler, targetHandler, id, ignoredHandler) => {
+	const item = sourceHandler.getItem(id);
+	const list = targetHandler.getParentView().queryView({view: "list"});
+
 	if (ignoredHandler) {
 		ignoredHandler.clear();
+		list.clearAll();
 	}
 	else if (!$$(getGroupPanelId()).getValues().name) {
-		const item = $$(getGroupListId()).getSelectedItem();
-		const list = $$(getGroupPanelId()).queryView({view: "list"});
+		$$(getGroupPanelId()).setValues($$(getGroupListId()).getSelectedItem());
+	}
 
-		$$(getGroupPanelId()).setValues(item);
-		/* console.log(item);
-		list.parse(item.words);
-		list.refresh(); */
+	if (item.translation) {
+		list.show();
+		list.parse(item.translation);
 	}
 	targetHandler.setValues(sourceHandler.getItem(id));
 };
