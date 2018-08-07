@@ -54,12 +54,8 @@ const toolbar = [
 		value: "Delete translation",
 		type: "danger",
 		click() {
-			const form = $$(getWordPanelId());
-
-			if (form.validate()) {
-				const data = form.getValues();
-				removeTranslation.call(this, data);
-			}
+			const data = $$(getWordPanelId()).getValues();
+			removeTranslation.call(this, data);
 		}
 	}
 ];
@@ -112,8 +108,11 @@ const wordPanel = {
 		$all: webix.rules.isNotEmpty
 	},
 	on: {
-		onAfterValidation() {
-
+		onBeforeValidate() {
+			$$(getTranslationInputId()).show();
+		},
+		onValues() {
+			$$(getTranslationInputId()).setValue("");
 		}
 	}
 };
