@@ -12,12 +12,10 @@ function update() {
 		}
 	}
 
-	console.log(updateOps);
-
-	/* updateWord(data._id, updateOps)
+	updateWord(data._id, updateOps)
 		.then((res) => {
 			webix.message({text: res.json().message});
-		}); */
+		});
 }
 
 function removeTranslation(data) {
@@ -36,7 +34,7 @@ function removeTranslation(data) {
 		.then((res) => {
 			const list = this.getParentView().getParentView().queryView({view: "list"});
 
-			list.remove(data.id);
+			list.remove(list.getSelectedId());
 			list.refresh();
 		})
 		.catch();

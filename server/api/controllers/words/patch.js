@@ -6,6 +6,9 @@ function getPatchResult(id, updateOps, res) {
 		case true:
 
 			if (updateOps.translation && !updateOps.deleteFlag) {
+				updateOps.translation = updateOps.translation.trim().split(", ");
+
+				console.log(updateOps.translation);
 				return updater.addTranslation(id, updateOps.translation);
 			}
 			if (!updateOps.deleteFlag && !updateOps.translation) {
@@ -32,7 +35,6 @@ function update(req, res) {
 			updateOps[ops.property] = ops.value;
 		}
 	}
-	console.log(updateOps);
 
 	const patch = getPatchResult(id, updateOps, res);
 
