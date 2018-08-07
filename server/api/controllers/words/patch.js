@@ -5,17 +5,19 @@ function getPatchResult(id, updateOps, res) {
 	switch (!_.isEmpty(updateOps)) {
 		case true:
 
-			if (updateOps.translation && !updateOps.deleteFlag) {
+			if (updateOps.deleteFlag) {
+				console.log("a");
+				return updater.removeTranslation(id, updateOps.translation);
+			}
+			else if (updateOps.translation) {
+				console.log("b");
 				updateOps.translation = updateOps.translation.trim().split(", ");
-
-				console.log(updateOps.translation);
 				return updater.addTranslation(id, updateOps.translation);
 			}
-			if (!updateOps.deleteFlag && !updateOps.translation) {
+			else if (!updateOps.translation) {
+				console.log("c");
+
 				return updater.updateData(id, updateOps);
-			}
-			else if (updateOps.deleteFlag) {
-				return updater.removeTranslation(id, updateOps.translation);
 			}
 			break;
 		default:

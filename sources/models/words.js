@@ -1,9 +1,3 @@
-export const words = new webix.DataCollection({
-	url: "http://localhost:3000/api/words/",
-	save: "rest->http://localhost:3000/api/words/"
-	// datatype: "jsarray"
-});
-
 export function getAllWords() {
 	return webix.ajax().get("http://localhost:3000/api/words/")
 		.then((res) => {
@@ -11,13 +5,19 @@ export function getAllWords() {
 			for (let item of res.json().content) {
 				data.push({groupID: item.id, words: item.words});
 			}
-			words.add(data);
+			// words.add(data);
 			return res;
 		});
 }
 
 export function getWord(id) {
 	return webix.ajax().get(`http://localhost:3000/api/words/${id}`);
+}
+
+export function addNewWord(data) {
+	return webix.ajax()
+		.headers({"Content-Type": "application/json"})
+		.post("http://localhost:3000/api/words/", data);
 }
 
 export function deleteWord(id) {

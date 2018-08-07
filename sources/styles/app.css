@@ -1,3 +1,9 @@
+.whiteButton{
+    color: #3498db !important;
+    background: #ffffff;
+    border:0px;
+    text-align: center;
+}
 
 .fa-close{
     padding-top: 5px;

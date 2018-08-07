@@ -26,6 +26,7 @@ const onGroupContentSelectEvent = (sourceHandler, targetHandler, id, ignoredHand
 	const item = sourceHandler.getItem(id);
 	const list = targetHandler.getParentView().queryView({view: "list"});
 
+
 	if (ignoredHandler) {
 		ignoredHandler.clear();
 		list.clearAll();
