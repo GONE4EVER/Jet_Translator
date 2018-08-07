@@ -1,8 +1,101 @@
 import {update, removeTranslation} from "./functions";
 
+const TRANSLATION_INPUT_ID = "top:dictionary:wordPanel:translationInput";
+const TRANSLATIONS_LIST_ID = "top:dictionary:wordPanel:translationsList";
 const WORD_PANEL_ID = "top:dictionary:wordPanel";
 
 const getWordPanelId = () => WORD_PANEL_ID;
+const getTranslationInputId = () => TRANSLATION_INPUT_ID;
+const getTranslationsListId = () => TRANSLATIONS_LIST_ID;
+
+
+const toolbar = [
+	{},
+	{
+		cols: [
+			{
+				view: "button",
+				value: "Update",
+				click() {
+					const form = $$(getWordPanelId());
+
+					if (form.validate()) {
+						let data = form.getValues();
+						update.call(this, data);
+					}
+				}
+			},
+			{
+				view: "button",
+				value: "Clear",
+				click() {
+					$$(getWordPanelId()).clear();
+					$$(getWordPanelId()).queryView({view: "list"}).clearAll();
+				}
+			},
+			{
+				view: "button",
+				value: "Add New",
+				type: "form",
+				click() {
+					const form = $$(getWordPanelId());
+
+					console.log(form.getValues());
+					/* webix.ajax()
+							.post("http://localhost:3000/api/words/", $$(getWordPanelId()).getValues())
+							.then(() => {})
+							.catch(() => {}); */
+				}
+			}
+		]
+	},
+	{
+		view: "button",
+		value: "Delete translation",
+		type: "danger",
+		click() {
+			const form = $$(getWordPanelId());
+
+			if (form.validate()) {
+				const data = form.getValues();
+				removeTranslation.call(this, data);
+			}
+		}
+	}
+];
+
+const list = {
+	id: getTranslationsListId(),
+	view: "list",
+	gravity: 2,
+	invalidMessage: "invalid value",
+	bottomPadding: 5,
+	select: true
+};
+
+const translationInput = {
+	id: getTranslationInputId(),
+	view: "textarea",
+	name: "translation",
+	labelWidth: 110,
+	invalidMessage: "invalid value",
+	bottomPadding: 5
+};
+
+const tabs = {
+	view: "tabview",
+	minHeight: 200,
+	cells: [
+		{
+			header: "Translations",
+			body: list
+		},
+		{
+			header: "New translation",
+			body: translationInput
+		}
+	]
+};
 
 const wordPanel = {
 	id: getWordPanelId(),
@@ -11,58 +104,23 @@ const wordPanel = {
 	elements: [
 		{view: "template", template: "Word info", type: "section"},
 		{name: "value", id: "value", view: "text", label: "Value", labelWidth: 110, invalidMessage: "the field is empty", bottomPadding: 5},
-		{
-			name: "translation",
-			id: "translation",
-			view: "list",
-			label: "Translation",
-			labelWidth: 110,
-			invalidMessage: "invalid value",
-			bottomPadding: 5
-		},
+		tabs,
 		{name: "partOfSpeech", id: "partOfSpeech", view: "text", label: "Part of speech", labelWidth: 110, invalidMessage: "invalid value", bottomPadding: 15},
-		{},
-		{
-			cols: [
-				{
-					view: "button",
-					value: "Update",
-					click: update
-				},
-				{
-					view: "button",
-					value: "Clear",
-					click() {
-						$$(getWordPanelId()).clear();
-					}
-				},
-				{
-					view: "button",
-					value: "Add New",
-					type: "form",
-					click() {
-						console.log(this.getParentView().getValues());
-						/* webix.ajax()
-							.post("http://localhost:3000/api/words/", $$(getWordPanelId()).getValues())
-							.then(() => {})
-							.catch(() => {}); */
-					}
-				}
-			]
-		},
-		{
-			view: "button",
-			value: "Remove translation",
-			type: "danger",
-			click: removeTranslation
-		}
+		...toolbar
 	],
 	rules: {
+		$all: webix.rules.isNotEmpty
+	},
+	on: {
+		onAfterValidation() {
 
+		}
 	}
 };
 
 export default wordPanel;
 export {
-	getWordPanelId
+	getWordPanelId,
+	getTranslationInputId,
+	getTranslationsListId
 };

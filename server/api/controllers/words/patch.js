@@ -4,6 +4,7 @@ const _ = require("lodash");
 function getPatchResult(id, updateOps, res) {
 	switch (!_.isEmpty(updateOps)) {
 		case true:
+
 			if (updateOps.translation && !updateOps.deleteFlag) {
 				return updater.addTranslation(id, updateOps.translation);
 			}
@@ -31,9 +32,11 @@ function update(req, res) {
 			updateOps[ops.property] = ops.value;
 		}
 	}
-	const result = getPatchResult(id, updateOps, res);
+	console.log(updateOps);
 
-	result
+	const patch = getPatchResult(id, updateOps, res);
+
+	patch
 		.then((result) => {
 			res.status(200).json({
 				message: result.nModified === 1 ? "Updated successfully" : "Item is already up-to-date",

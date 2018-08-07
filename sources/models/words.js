@@ -20,16 +20,18 @@ export function getWord(id) {
 	return webix.ajax().get(`http://localhost:3000/api/words/${id}`);
 }
 
+export function deleteWord(id) {
+	return webix.ajax().del(`http://localhost:3000/api/words/${id}`);
+}
+
 export function updateWord(id, updateOptions) {
 	return webix.ajax()
 		.headers({"Content-Type": "application/json"})
 		.patch(`http://localhost:3000/api/words/${id}`, JSON.stringify(updateOptions));
 }
 
-export function deleteWord(id) {
-	return webix.ajax().del(`http://localhost:3000/api/words/${id}`);
-}
-
-export function deleteTranslation() {
-
+export function deleteTranslation(id, updateOptions) {
+	return webix.ajax()
+		.headers({"Content-Type": "application/json"})
+		.patch(`http://localhost:3000/api/words/${id}`, JSON.stringify(updateOptions));
 }
