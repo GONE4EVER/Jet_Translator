@@ -1,5 +1,6 @@
 import {addNewWord, updateWord, deleteTranslation} from "../../../../models/words";
 
+
 export function addWord(data) {
 	delete data.id;
 	delete data._id;
@@ -18,10 +19,7 @@ function update(data) {
 		}
 	}
 
-	updateWord(data._id, updateOps)
-		.then((res) => {
-			webix.message({text: res.json().message});
-		});
+	return updateWord(data._id, updateOps).then(res => res.json());
 }
 
 function removeTranslation(id, value) {

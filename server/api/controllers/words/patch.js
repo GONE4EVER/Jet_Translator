@@ -6,17 +6,13 @@ function getPatchResult(id, updateOps, res) {
 		case true:
 
 			if (updateOps.deleteFlag) {
-				console.log("a");
 				return updater.removeTranslation(id, updateOps.translation);
 			}
 			else if (updateOps.translation) {
-				console.log("b");
 				updateOps.translation = updateOps.translation.trim().split(", ");
 				return updater.addTranslation(id, updateOps.translation);
 			}
 			else if (!updateOps.translation) {
-				console.log("c");
-
 				return updater.updateData(id, updateOps);
 			}
 			break;

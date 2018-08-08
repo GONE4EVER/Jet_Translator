@@ -1,11 +1,40 @@
 const Word = require("../../models/word");
 
-const MAX_AGE = 120;
-
 function getCertain(req, res) {
-	const id = req.params.id;
+	// const params = JSON.parse(req.query.params);
+	const params = new RegExp(JSON.parse(req.query.params));
 
-	Word.findById(id)
+	Word.find({value: params})
+		.exec()
+		.then((result) => {
+			console.log(result);
+		})
+		.catch();
+	/* .select("_id value translation partOfSpeech")
+		.exec()
+		.then((result) => {
+			const response = result.map(item => ({
+				_id: item._id,
+				value: item.value,
+				partOfSpeech: item.partOfSpeech,
+				translation: item.translation
+			}));
+
+			res.status(200).json({
+				request: {
+					type: "GET",
+					url: `${req.baseUrl}`
+				},
+				content: response
+			});
+		})
+		.catch((err) => {
+			res.status(500).json({
+				error: err
+			});
+		}); */
+
+	/* Word.findById(id)
 		.select("_id value translation partOfSpeech")
 		.exec()
 		.then((result) => {
@@ -30,7 +59,7 @@ function getCertain(req, res) {
 			res.status(500).json({
 				error: err
 			});
-		});
+		}); */
 }
 
 module.exports = getCertain;

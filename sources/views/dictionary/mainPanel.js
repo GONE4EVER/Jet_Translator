@@ -38,19 +38,7 @@ const all = {
 	view: "list",
 	maxWidth: 450,
 	select: true,
-	template: "#value# (#partOfSpeech#)<span class = 'webix_icon fa-close'></span>",
-	onClick: {
-		"fa-close": (ev, id) => {
-			webix.confirm({
-				text: "Item data will be lost. <br/> Are you sure?",
-				ok: "Yes",
-				cancel: "Cancel",
-				callback: (ok) => {
-					onWordDelete(ok, id);
-				}
-			});
-		}
-	},
+	template: "#value# (#partOfSpeech#)",
 	on: {
 		onAfterSelect(id) {
 			$$(getGroupContentId()).unselectAll();
