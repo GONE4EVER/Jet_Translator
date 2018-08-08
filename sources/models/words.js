@@ -1,3 +1,5 @@
+
+
 export function getAllWords() {
 	return webix.ajax().get("http://localhost:3000/api/words/")
 		.then((res) => {
@@ -5,13 +7,13 @@ export function getAllWords() {
 			for (let item of res.json().content) {
 				data.push({groupID: item.id, words: item.words});
 			}
-			// words.add(data);
+
 			return res;
 		});
 }
 
-export function getWord(id) {
-	return webix.ajax().get(`http://localhost:3000/api/words/${id}`);
+export function getWordByOccurrences(params) {
+	return webix.ajax().get(`http://localhost:3000/api/words/${params}`);
 }
 
 export function addNewWord(data) {
