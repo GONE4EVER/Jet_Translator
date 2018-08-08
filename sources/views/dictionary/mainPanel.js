@@ -1,5 +1,5 @@
 import sidePanel from "./sidePanel/index";
-import {deleteWord, getAllWords} from "../../models/words";
+import DAO from "../../models/wordsDAO";
 import {getGroupPanelId} from "./sidePanel/groupPanel";
 import {getGroupContentRequestEventId} from "../top";
 import {getWordPanelId} from "./sidePanel/wordPanel/index";
@@ -18,11 +18,11 @@ const getFullContentListId = () => FULL_CONTENT_LIST_ID;
 function onWordDelete(sure, id) {
 	if (sure) {
 		let item = $$(getFullContentListId()).getItem(id);
-		deleteWord(item._id)
+		DAO.deleteWord(item._id)
 			.then((res) => {
 				webix.message({text: res.json().message});
 				$$(getFullContentListId()).remove(item._id);
-				getAllWords().then((response) => {
+				DAO.getAllWords().then((response) => {
 					$$(getFullContentListId()).clearAll();
 					$$(getFullContentListId()).parse(response.json().content);
 				});

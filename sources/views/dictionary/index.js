@@ -1,8 +1,10 @@
 import {JetView} from "webix-jet";
-import {getAllWords} from "../../models/words";
+
 import {getAllGroups} from "../../models/groups";
-import layout, {getGroupListId, getFullContentListId} from "./mainPanel";
 import {getWordsComboId} from "./sidePanel/groupPanel";
+import * as WordsController from "./sidePanel/wordPanel/wordsController";
+import layout, {getGroupListId, getFullContentListId} from "./mainPanel";
+
 
 export default class DictionatyTopView extends JetView {
 	config() {
@@ -18,7 +20,8 @@ export default class DictionatyTopView extends JetView {
 			}); */
 	}
 	ready() {
-		let promises = [getAllWords(), getAllGroups()];
+		let promises = [WordsController.getWordsList(), getAllGroups()];
+
 		Promise.all(promises)
 			.then(([words, groups]) => {
 				this.config.data = {words, groups};
@@ -29,3 +32,4 @@ export default class DictionatyTopView extends JetView {
 			});
 	}
 }
+

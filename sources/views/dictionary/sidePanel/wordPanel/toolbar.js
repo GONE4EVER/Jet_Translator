@@ -1,4 +1,4 @@
-import {update, removeTranslation, addWord} from "./functions";
+import * as WordsController from "./wordsController";
 import {getWordPanelId, getTranslationsListId} from ".";
 
 const css = {
@@ -23,7 +23,7 @@ const toolbar = [
 						if (form.validate()) {
 							let data = form.getValues();
 
-							update(data)
+							WordsController.updateWord(data)
 								.then((res) => {
 									form.clear();
 									form.queryView({view: "list"}).clearAll();
@@ -57,7 +57,7 @@ const toolbar = [
 						if (form.validate()) {
 							const data = form.getValues();
 
-							addWord(data);
+							WordsController.addNewWord(data);
 						}
 					}
 				}
@@ -72,7 +72,7 @@ const toolbar = [
 						const list = $$(getTranslationsListId());
 
 						if (list.getSelectedItem()) {
-							removeTranslation(data._id, list.getSelectedItem().value)
+							WordsController.removeTranslation(data._id, list.getSelectedItem().value)
 								.then((res) => {
 									list.remove(list.getSelectedId());
 									list.refresh();

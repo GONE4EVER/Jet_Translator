@@ -106,6 +106,7 @@ export default class TopView extends JetView {
 	init() {
 		this.on(this.app, getGroupContentRequestEventId(), onGetGroupContentRequestEvent);
 		this.on(this.app, onGroupContentSelectEventId(), onGroupContentSelectEvent);
+		// this.on(this.app, )
 	}
 	logOut() {
 		this.show(`/unlogged/${Navigator.getSignInUrl()}`);

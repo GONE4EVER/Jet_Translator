@@ -39,7 +39,6 @@ const toolbar = [
 				cols: [
 					{
 						view: "icon",
-						// value: "Update <span class='webix_icon fa-close'></span>",
 						icon: "edit",
 						tooltip: "Edit selected",
 						on: {
