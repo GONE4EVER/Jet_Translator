@@ -1,5 +1,3 @@
-
-
 export function getAllWords() {
 	return webix.ajax().get("http://localhost:3000/api/words/")
 		.then((res) => {
@@ -37,3 +35,5 @@ export function deleteTranslation(id, updateOptions) {
 		.headers({"Content-Type": "application/json"})
 		.patch(`http://localhost:3000/api/words/${id}`, JSON.stringify(updateOptions));
 }
+
+export default class Notifier {}
