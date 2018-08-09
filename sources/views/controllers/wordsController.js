@@ -1,5 +1,5 @@
-import DAO from "../../../../models/wordsDAO";
-import createNotifier from "../../../helpers/notifier";
+import DAO from "../../DAO/wordsDAO";
+import createNotifier from "../helpers/notifier";
 
 function getWordsList() {
 	return DAO.getAllWords();
@@ -29,6 +29,7 @@ function updateWord(data) {
 function deleteWord(id) {
 	return DAO.deleteWord(id);
 }
+
 
 function removeTranslation(id, value) {
 	const options = [

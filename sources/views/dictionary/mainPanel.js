@@ -1,5 +1,4 @@
 import sidePanel from "./sidePanel/index";
-import DAO from "../../models/wordsDAO";
 import {getGroupPanelId} from "./sidePanel/groupPanel";
 import {getGroupContentRequestEventId} from "../top";
 import {getWordPanelId} from "./sidePanel/wordPanel/index";
@@ -15,23 +14,6 @@ const getGroupContentHeaderId = () => GROUP_CONTENT_HEADER_ID;
 const getGroupListId = () => GROUP_LIST_ID;
 const getFullContentListId = () => FULL_CONTENT_LIST_ID;
 
-function onWordDelete(sure, id) {
-	if (sure) {
-		let item = $$(getFullContentListId()).getItem(id);
-		DAO.deleteWord(item._id)
-			.then((res) => {
-				webix.message({text: res.json().message});
-				$$(getFullContentListId()).remove(item._id);
-				DAO.getAllWords().then((response) => {
-					$$(getFullContentListId()).clearAll();
-					$$(getFullContentListId()).parse(response.json().content);
-				});
-			})
-			.catch((err) => {
-				webix.message({text: err});
-			});
-	}
-}
 
 const all = {
 	id: getFullContentListId(),
@@ -42,7 +24,9 @@ const all = {
 	on: {
 		onAfterSelect(id) {
 			$$(getGroupContentId()).unselectAll();
-			this.$scope.app.callEvent(onGroupContentSelectEventId(), [this, $$(getWordPanelId()), id, $$(getGroupPanelId())]);
+			this.$scope.app.callEvent(onGroupContentSelectEventId(),
+				[this.config.id, getWordPanelId(), id, getGroupPanelId()]
+			);
 		}
 	}
 };
@@ -56,9 +40,13 @@ const groupsList = {
 	on: {
 		onAfterSelect(id) {
 			this.$scope.app
-				.callEvent(getGroupContentRequestEventId(), [this, $$(getGroupContentId()), id]);
+				.callEvent(getGroupContentRequestEventId(),
+					[this.config.id, $$(getGroupContentId()), id]
+				);
 			this.$scope.app
-				.callEvent(onGroupContentSelectEventId(), [this, $$(getGroupPanelId()), id, $$(getWordPanelId())]);
+				.callEvent(onGroupContentSelectEventId(),
+					[this.config.id, getGroupPanelId(), id, getWordPanelId()]
+				);
 		}
 	}
 };
@@ -72,7 +60,9 @@ const groupContent = {
 	on: {
 		onAfterSelect(id) {
 			$$(getFullContentListId()).unselectAll();
-			this.$scope.app.callEvent(onGroupContentSelectEventId(), [this, $$(getWordPanelId()), id]);
+			this.$scope.app.callEvent(onGroupContentSelectEventId(),
+				[this.config.id, getWordPanelId(), id]
+			);
 		}
 	}
 };

@@ -1,8 +1,8 @@
 import {JetView} from "webix-jet";
 
-import {getAllGroups} from "../../models/groups";
 import {getWordsComboId} from "./sidePanel/groupPanel";
-import * as WordsController from "./sidePanel/wordPanel/wordsController";
+import * as GroupsController from "../controllers/groupsController";
+import * as WordsController from "../controllers/wordsController";
 import layout, {getGroupListId, getFullContentListId} from "./mainPanel";
 
 
@@ -20,7 +20,7 @@ export default class DictionatyTopView extends JetView {
 			}); */
 	}
 	ready() {
-		let promises = [WordsController.getWordsList(), getAllGroups()];
+		let promises = [WordsController.getWordsList(), GroupsController.getGroupsList()];
 
 		Promise.all(promises)
 			.then(([words, groups]) => {

@@ -1,26 +1,26 @@
 class Notifier {
-	constructor(words) {
-		this.setWordsStorage(words);
+	constructor(data) {
+		this.setStorage(data);
 
-		this.wordSubs = [];
+		this.subs = [];
 	}
 
 	get getWordsStorageLink() {
 		return this.wordsStore;
 	}
 
-	set setWordsStorage(array) {
+	set setStorage(array) {
 		this.wordsStore = array;
 	}
 
 	subscribe(source, target) {
 		if (target === this.getWordsStorageLink()) {
-			this.wordSubs.push(source);
+			this.subs.push(source);
 		}
 	}
 
-	get getWordSubscribers() {
-
+	get getSubscribers() {
+		return this.subs;
 	}
 }
 

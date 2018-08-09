@@ -1,4 +1,4 @@
-import {toolbar} from "./toolbar";
+import {toolbar} from "./toolbarConfig";
 
 const TRANSLATION_INPUT_ID = "top:dictionary:wordPanel:translationInput";
 const TRANSLATIONS_LIST_ID = "top:dictionary:wordPanel:translationsList";
@@ -46,9 +46,9 @@ const wordPanel = {
 	minWidth: 300,
 	elements: [
 		{view: "template", template: "Word info", type: "section"},
-		{name: "value", id: "value", view: "text", label: "Value", labelWidth: 110, invalidMessage: "the field is empty", bottomPadding: 5},
+		{name: "value", id: "value", view: "text", label: "Value", labelWidth: 110, bottomPadding: 5},
 		tabs,
-		{name: "partOfSpeech", id: "partOfSpeech", view: "text", label: "Part of speech", labelWidth: 110, invalidMessage: "invalid value", bottomPadding: 15},
+		{name: "partOfSpeech", id: "partOfSpeech", view: "text", label: "Part of speech", labelWidth: 110, bottomPadding: 15},
 		...toolbar
 	],
 	rules: {

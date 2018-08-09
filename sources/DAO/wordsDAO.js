@@ -1,9 +1,6 @@
-class DataAccessObject {
-	constructor(link, headers) {
-		this.link = link;
-		this.headers = headers;
-	}
+import DataAccessObject from "./super";
 
+class WordsDAO extends DataAccessObject {
 	getAllWords() {
 		return webix.ajax().get(`${this.link}`)
 			.then((res) => {
@@ -40,7 +37,7 @@ class DataAccessObject {
 	}
 }
 
-const DAO = new DataAccessObject(
+const DAO = new WordsDAO(
 	"http://localhost:3000/api/words/",
 	{"Content-Type": "application/json"}
 );
