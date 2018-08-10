@@ -7,8 +7,18 @@ const onAddClick = () => {
 	if (form.validate()) {
 		const data = form.getValues();
 
-		WordsController.addNewWord(data);
+		WordsController.addNewWord(data)
+			.then((res) => {
+				webix.message({text: res.json().message});
+			})
+			.catch(err => webix.message({text: err}));
 	}
+};
+
+const onClearClick = () => {
+	const form = $$(getWordPanelId());
+	form.clear();
+	form.queryView({view: "list"}).clearAll();
 };
 
 const onDeleteClick = () => {
@@ -42,11 +52,6 @@ const onEditClick = () => {
 	}
 };
 
-const onClearClick = () => {
-	const form = $$(getWordPanelId());
-	form.clear();
-	form.queryView({view: "list"}).clearAll();
-};
 
 export {
 	onAddClick,

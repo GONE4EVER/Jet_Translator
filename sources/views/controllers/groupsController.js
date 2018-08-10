@@ -29,7 +29,7 @@ function deleteGroup(id) {
 	return DAO.deleteGroup(id);
 }
 
-function removeWord(id, value) {
+function removeWordFromGroup(id, value) {
 	const options = [
 		{
 			property: "deleteFlag",
@@ -41,14 +41,14 @@ function removeWord(id, value) {
 		}
 	];
 
-	return DAO.removeWord(id, options);
+	return DAO.removeWordFromGroup(id, options);
 }
 
 export {
 	addNewGroup,
 	deleteGroup,
 	getGroupsList,
-	removeWord,
+	removeWordFromGroup,
 	updateGroup
 
 };

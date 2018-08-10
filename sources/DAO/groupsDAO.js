@@ -30,7 +30,7 @@ class GroupsDAO extends DataAccessObject {
 			.patch(`${this.link}${id}`, JSON.stringify(updateOptions));
 	}
 
-	removeWord(id, updateOptions) {
+	removeWordFromGroup(id, updateOptions) {
 		return webix.ajax()
 			.headers(this.headers)
 			.patch(`${this.link}${id}`, JSON.stringify(updateOptions));
