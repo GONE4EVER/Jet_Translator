@@ -3,9 +3,10 @@ Webix Jet Demo App
 
 ### How to run
 
-- run ```npm install```
+- installation ```npm install```
+- build ```npm run build```
 - run ```npm run client```
-- open ```http://localhost:8080```
+- open ```http://localhost:8081```
 
 For more details, check https://www.gitbook.com/book/webix/webix-jet/details
 
