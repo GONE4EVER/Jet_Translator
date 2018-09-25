@@ -1,3 +1,10 @@
+.headerLink {
+    cursor: pointer; 
+    text-align: center; 
+    font-size: 24px; 
+    padding-left: 10%
+}
+
 .whiteButton{
     color: #3498db !important;
     background: #ffffff;

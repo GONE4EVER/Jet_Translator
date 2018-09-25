@@ -1,5 +1,7 @@
 import * as WordsController from "../../../controllers/wordsController";
 import {getWordPanelId, getTranslationsListId} from ".";
+import { getFullContentListId } from "../../mainPanel";
+
 
 const onAddClick = () => {
 	const form = $$(getWordPanelId());
@@ -9,6 +11,9 @@ const onAddClick = () => {
 
 		WordsController.addNewWord(data)
 			.then((res) => {
+				$$(getFullContentListId()).refresh();
+
+				form.clear();
 				webix.message({text: res.json().message});
 			})
 			.catch(err => webix.message({text: err}));
@@ -28,6 +33,7 @@ const onDeleteClick = () => {
 	if (list.getSelectedItem()) {
 		WordsController.removeTranslation(data._id, list.getSelectedItem().value)
 			.then((res) => {
+				$$(getWordPanelId()).clear();
 				list.remove(list.getSelectedId());
 				list.refresh();
 				webix.message({text: res.json().message});

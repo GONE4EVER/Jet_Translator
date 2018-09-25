@@ -2,7 +2,7 @@ import {JetView} from "webix-jet";
 import * as Navigator from "./helpers/navigationConstants";
 
 const HEADER_ID = "header:logOut";
-const HEADER_TEXT = "<div style = 'cursor: pointer; text-align: center; font-size: 24px; padding-left: 10%'><a route = '/top/dictionary'>My Own Dictionary</a></div>";
+const HEADER_TEXT = "<div class='headerLink'><a route = '/top/dictionary'>My Own Dictionary</a></div>";
 
 const getHeaderId = () => HEADER_ID;
 

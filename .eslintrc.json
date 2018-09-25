@@ -1,20 +1,23 @@
 {
     "env": {
         "browser": true,
+        "jest": true,
         "es6": true
     },
     "globals":{
         "webix":true,
         "$$":true,
         "scheduler":true,
-        "APPNAME":true, "VERSION":true, "PRODUCTION":true
+        "APPNAME":true, "VERSION":true, "PRODUCTION":true,
+        "page": true,
+        "browser": true,
+        "jestPuppeteer": true
     },
     "extends": "./node_modules/eslint-xbsoftware/1__double_quotes_and_tabs/.eslintrc",
     "parserOptions": {
         "sourceType": "module"
     },
     "rules": {
-        "no-debugger": "off",
         "class-methods-use-this": "off",
         "no-debugger": "off",
         "no-param-reassign": "off",

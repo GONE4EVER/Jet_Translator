@@ -30,7 +30,6 @@ const onGetGroupContentRequestEvent = (sourceHandlerId, targetHandlerId, groupId
 		if (sourceHandler.getItem(groupId).words.findIndex(item => item._id === obj._id) === -1) {
 			return obj;
 		}
-
 		return null;
 	});
 
