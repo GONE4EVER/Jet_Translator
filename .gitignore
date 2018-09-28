@@ -1,5 +1,6 @@
 .idea/
 codebase/
 node_modules/
+JetTranslator_Dist/
 *.log
 .env
