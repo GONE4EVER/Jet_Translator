@@ -2,8 +2,8 @@
 import {JetApp, HashRouter, plugins} from "webix-jet";
 
 export default class MyApp extends JetApp {
-	constructor(config) {
-		super({
+	constructor() {
+		const config = {
 			router: HashRouter,
 			debug: true,
 			id:	APPNAME,
@@ -14,7 +14,8 @@ export default class MyApp extends JetApp {
 				"/sign_in": "/unlogged/unlogged.sign_in",
 				"/dictionary": "/top/dictionary"
 			}
-		});
+		};
+		super({...config});
 	}
 }
 

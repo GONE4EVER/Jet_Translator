@@ -15,12 +15,12 @@ module.exports = {
 	},
 	output: {
 		filename: "./codebase/[name].js",
-		path: path.resolve(__dirname, "JetTranslator/"),
-		publicPath: "/JetTranslator/" //
+		path: path.resolve(__dirname, "JetTranslator_Dist/"),
+		publicPath: "/JetTranslator_Dist/" //
 	},
 	devtool: "inline-source-map",
 	devServer: { //
-		contentBase: "./JetTranslator/" //
+		contentBase: "./JetTranslator_Dist/" //
 	}, //
 	module: {
 		rules: [
